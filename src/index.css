@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Funnel+Display:wght@400;500;600;700&family=Gloria+Hallelujah&display=swap');
+
+:root {
+  --teal: #4EC8C8;
+  --green: #90D4A0;
+  --black: rgb(33, 33, 33);
+  --body-gray: rgb(85, 85, 85);
+  --light-bg: rgb(235, 238, 243);
+  --white: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Funnel Display', sans-serif;
+  color: var(--black);
+  background: var(--white);
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+}
+
+[id] {
+  scroll-margin-top: 110px;
+}
+
+.section {
+  padding: 80px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-size: 14px;
+  color: var(--teal);
+  font-family: 'Gloria Hallelujah', cursive;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.section-title {
+  font-size: 48px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 120%;
+  margin: 0 0 40px 0;
+  max-width: 700px;
+}
+
+@media (max-width: 768px) {
+  .section { padding: 50px 20px; }
+  .section-title { font-size: 32px; }
+}
