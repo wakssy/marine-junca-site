@@ -2,7 +2,7 @@ const TEAL = "#4EC8C8"
 const GREEN = "#90D4A0"
 
 export default function MapEmbed({
-    address = "300 impasse de Pudepe, Rivière-Saas-et-Gourby, 40180",
+    address = "300 impasse de Poudepe, Rivière-Saas-et-Gourby, 40180",
     coords = "43.699528,-1.188472",
     zoom = 16,
 }: {

@@ -63,7 +63,7 @@ export default function SEOHead({ page = "home" }: { page?: "home" | "contact" }
                 "telephone": "+33640452328",
                 "address": {
                     "@type": "PostalAddress",
-                    "streetAddress": "300 impasse de Pudepe",
+                    "streetAddress": "300 impasse de Poudepe",
                     "addressLocality": "Rivière-Saas-et-Gourby",
                     "postalCode": "40180",
                     "addressRegion": "Nouvelle-Aquitaine",
