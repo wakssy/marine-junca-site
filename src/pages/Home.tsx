@@ -120,7 +120,7 @@ export default function Home() {
                     <a href="/contact" className="hero-cta">Prendre RDV →</a>
 
                     <div className="hero-photo-block">
-                        <img className="hero-photo" src="/images/hero-photo.png" alt="Adolescente face à un choix d'orientation" />
+                        <img className="hero-photo" src="/images/hero-photo.png" alt="Adolescente face à un choix d'orientation" width={1690} height={931} loading="eager" />
                         <div className="trust-badge">
                             <div className="trust-stars">
                                 {Array.from({ length: 5 }).map((_, s) => (
@@ -129,9 +129,9 @@ export default function Home() {
                             </div>
                             <div className="trust-badge-row">
                                 <div className="trust-avatars">
-                                    <img src="/images/trust-avatar-1.jpg" alt="" />
-                                    <img src="/images/trust-avatar-2.jpg" alt="" />
-                                    <img src="/images/trust-avatar-3.jpg" alt="" />
+                                    <img src="/images/trust-avatar-1.jpg" alt="" width={400} height={400} />
+                                    <img src="/images/trust-avatar-2.jpg" alt="" width={400} height={400} />
+                                    <img src="/images/trust-avatar-3.jpg" alt="" width={400} height={400} />
                                 </div>
                                 <div style={{ textAlign: "left" }}>
                                     <div className="trust-score">4.9/5</div>
@@ -143,7 +143,7 @@ export default function Home() {
                 </div>
             </section>
             <div className="hero-cloud-wrap">
-                <img src="/images/cloud-divider.png" alt="" />
+                <img src="/images/cloud-divider.png" alt="" width={6400} height={1026} loading="lazy" />
             </div>
 
             {/* FEATURES */}
@@ -195,7 +195,7 @@ export default function Home() {
                             <AccordionCard key={i} {...c} />
                         ))}
                     </div>
-                    <img className="curriculum-photo" src="/images/curriculum-photo.png" alt="Accompagnement en orientation scolaire" />
+                    <img className="curriculum-photo" src="/images/curriculum-photo.png" alt="Accompagnement en orientation scolaire" width={1519} height={1036} loading="lazy" />
                 </div>
             </section>
 
@@ -222,7 +222,7 @@ export default function Home() {
                                 </div>
                                 <p style={{ fontSize: 15, lineHeight: 1.6, marginBottom: 24, flex: 1 }}>{t.text}</p>
                                 <div style={{ display: "flex", alignItems: "center", gap: 12, paddingTop: 20, borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-                                    <img src={t.avatar} alt={t.author} style={{ width: 44, height: 44, borderRadius: "50%", objectFit: "cover", border: "2px solid rgba(255,255,255,0.15)" }} />
+                                    <img src={t.avatar} alt={t.author} width={400} height={400} loading="lazy" style={{ width: 44, height: 44, borderRadius: "50%", objectFit: "cover", border: "2px solid rgba(255,255,255,0.15)" }} />
                                     <div>
                                         <p style={{ fontSize: 14, fontWeight: 600, margin: 0 }}>{t.author}</p>
                                         <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", margin: 0 }}>{t.role}</p>

@@ -34,7 +34,7 @@ export default function NavMobile({ logoUrl = "/images/logo.png" }: { logoUrl?: 
                     padding: "12px 24px",
                 }}>
                     <a href="/" style={{ display: "flex", alignItems: "center" }}>
-                        <img src={logoUrl} alt="Marine Junca" style={{ height: "40px", width: "auto", display: "block" }} />
+                        <img src={logoUrl} alt="Marine Junca" width={1254} height={1254} style={{ height: "40px", width: "auto", display: "block" }} />
                     </a>
 
                     <div className="nav-desktop-links" style={{ alignItems: "center", gap: 32 }}>

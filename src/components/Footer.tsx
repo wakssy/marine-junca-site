@@ -110,7 +110,7 @@ export default function Footer() {
                     </div>
 
                     <div className="footer-photo-wrap">
-                        <img src="/images/headshot.png" alt="Marine Junca" className="footer-photo" />
+                        <img src="/images/headshot.png" alt="Marine Junca" className="footer-photo" width={1254} height={1254} loading="lazy" />
                         <a href={SOCIAL_LINKS.email} className="footer-badge footer-badge-mail" aria-label="Envoyer un email à Marine Junca">
                             <Mail size={16} />
                         </a>
@@ -139,7 +139,7 @@ export default function Footer() {
                 </div>
 
                 <div className="footer-cloud-wrap">
-                    <img src="/images/cloud-divider.png" alt="" />
+                    <img src="/images/cloud-divider.png" alt="" width={6400} height={1026} loading="lazy" />
                 </div>
             </footer>
         </>
