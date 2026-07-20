@@ -60,7 +60,7 @@ export default function Home() {
                 .hero-badge-check { width: 18px; height: 18px; min-width: 18px; border-radius: 50%; background: rgba(255,255,255,0.35); display: flex; align-items: center; justify-content: center; }
                 .hero-cta { display: inline-flex; align-items: center; gap: 8px; padding: 16px 32px; background: white; color: rgb(33,33,33); border-radius: 12px; text-decoration: none; font-weight: 600; box-shadow: 0 10px 30px rgba(33,33,33,0.15); }
                 .hero-photo-block { position: relative; max-width: 900px; margin: 56px auto 0 auto; }
-                .hero-photo-block img.hero-photo { position: relative; z-index: 1; width: 100%; display: block; border-radius: 24px; border: 6px solid rgba(255,255,255,0.4); box-shadow: 0 30px 60px rgba(33,33,33,0.2); }
+                .hero-photo-block img.hero-photo { position: relative; z-index: 1; width: 100%; height: auto; display: block; border-radius: 24px; border: 6px solid rgba(255,255,255,0.4); box-shadow: 0 30px 60px rgba(33,33,33,0.2); }
                 .trust-badge {
                     position: absolute; z-index: 3; left: -18px; top: 50%;
                     transform: translateY(-50%) rotate(-6deg);
@@ -77,7 +77,7 @@ export default function Home() {
                 .trust-score { font-size: 15px; font-weight: 700; color: rgb(33,33,33); line-height: 1; }
                 .trust-score-label { font-size: 10px; color: var(--body-gray); font-weight: 500; }
                 .hero-cloud-wrap { position: relative; z-index: 4; width: 100%; margin-top: -8vw; pointer-events: none; }
-                .hero-cloud-wrap img { display: block; width: 100%; }
+                .hero-cloud-wrap img { display: block; width: 100%; height: auto; }
                 .curriculum-grid { display: flex; flex-direction: row; gap: 50px; align-items: flex-start; }
                 .curriculum-photo { flex: 1; max-width: 460px; border-radius: 20px; width: 100%; object-fit: cover; align-self: stretch; }
                 @media (max-width: 900px) {
@@ -195,7 +195,7 @@ export default function Home() {
                             <AccordionCard key={i} {...c} />
                         ))}
                     </div>
-                    <img className="curriculum-photo" src="/images/curriculum-photo.png" alt="Accompagnement en orientation scolaire" width={1519} height={1036} loading="lazy" />
+                    <img className="curriculum-photo" src="/images/curriculum-photo.png" alt="Accompagnement en orientation scolaire" loading="lazy" />
                 </div>
             </section>
 

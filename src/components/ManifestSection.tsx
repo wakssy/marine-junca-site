@@ -103,7 +103,7 @@ export default function ManifestSection() {
                     <div className="manifest-intro">
                         <div className="manifest-photo-wrap">
                             <div className="manifest-blob" />
-                            <img className="manifest-photo" src="/images/headshot.png" alt="Marine Junca" width={1254} height={1254} loading="lazy" />
+                            <img className="manifest-photo" src="/images/headshot.png" alt="Marine Junca" loading="lazy" />
                         </div>
                         <span className="manifest-label">Mon engagement</span>
                         <h2 className="manifest-title">Des valeurs au cœur de chaque accompagnement</h2>
