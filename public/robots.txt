@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://marine-junca-site.vercel.app/sitemap.xml
+Sitemap: https://marine-junca-orientation.fr/sitemap.xml

@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 
-const SITE_URL = "https://marine-junca-site.vercel.app"
+const SITE_URL = "https://marine-junca-orientation.fr"
 
 const faqs = [
     { q: "Comment se déroule un accompagnement ?", a: "L'accompagnement se fait en plusieurs séances individuelles, en présentiel ou à distance. Chaque séance dure environ 1h et suit les 5 étapes du parcours : bilan de situation, identification des forces, exploration des possibilités, choix d'orientation, et passage à l'action." },
