@@ -29,8 +29,8 @@ export default function SEOHead({ page = "home" }: { page?: "home" | "contact" }
         }
 
         if (page === "home") {
-            document.title = "Conseillère en Orientation Scolaire à Rivière-Saas-et-Gourby | Marine Junca"
-            setMeta("description", "Marine Junca, conseillère en orientation scolaire indépendante à Rivière-Saas-et-Gourby (40), près de Dax et Pau. Bilan d'orientation, aide Parcoursup, accompagnement lycéens et collégiens. Premier RDV gratuit. Déplacement inclus à 45 km.")
+            document.title = "Conseillère en Orientation Scolaire à Dax (40) | Marine Junca"
+            setMeta("description", "Marine Junca, conseillère en orientation scolaire indépendante à Dax et dans les Landes (40). Bilan d'orientation, aide Parcoursup, accompagnement lycéens et collégiens. Premier RDV gratuit. Déplacement inclus à 45 km depuis Rivière-Saas-et-Gourby.")
             setMeta("keywords", "conseillère orientation scolaire Rivière-Saas-et-Gourby, bilan orientation scolaire Landes, aide Parcoursup Dax, orientation lycée Landes, orientation collège Dax, accompagnement orientation scolaire Nouvelle-Aquitaine, conseiller orientation indépendant 40, orientation professionnelle jeunes Pyrénées-Atlantiques, orientation scolaire près de Dax")
             setMeta("robots", "index, follow")
             setMeta("author", "Marine Junca")
