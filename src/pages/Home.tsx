@@ -1,13 +1,12 @@
-import { GitFork, Waypoints, Lightbulb, ListChecks, HeartHandshake, LifeBuoy, Star } from "lucide-react"
+import { GitFork, Waypoints, Lightbulb, ListChecks, HeartHandshake, LifeBuoy, Star, Quote } from "lucide-react"
 import RetroGrid from "../components/RetroGrid"
 import AccordionCard from "../components/AccordionCard"
 import PricingCards from "../components/PricingCards"
 import CoachScolaireSection from "../components/CoachScolaireSection"
 import ManifestSection from "../components/ManifestSection"
 import BuildFutureSection from "../components/BuildFutureSection"
-import { ParcoursRail, Reviews, Faq, PhoneButton } from "../components/ui"
-import { HOME_FAQ } from "../content/homeFaq"
-import { ZONE_COMMUNES, REVIEWS, RATING } from "../seo/site"
+import LocalSEOSections from "../components/LocalSEOSections"
+import SEOHead from "../components/SEOHead"
 
 const features = [
     { icon: GitFork, emoji: "📖", color: "#4EC8C8", title: "Difficile de choisir une filière ?", text: "Comprendre les différentes options et identifier celles qui correspondent vraiment à son profil." },
@@ -26,6 +25,12 @@ const curriculum = [
     { etape: "Étape 05", module: "Module 05", titre: "Passer à l'action", description: "Préparer les choix scolaires et les démarches d'admission." },
 ]
 
+const testimonials = [
+    { author: "Erika Austin", role: "Parents de Hugo", avatar: "/images/avatar-erika.png", rating: 5, text: "Un accompagnement personnalisé et bienveillant. Hugo est aujourd'hui beaucoup plus serein concernant son orientation." },
+    { author: "Emma R.", role: "Étudiante", avatar: "/images/avatar-emma.jpg", rating: 5, text: "Grâce à Marine, j'ai enfin trouvé une orientation qui me correspond. Son accompagnement a été précieux." },
+    { author: "Sophie M.", role: "Maman d'un élève de Première", avatar: "/images/avatar-sophie.png", rating: 5, text: "Marine a aidé notre fils à y voir plus clair dans ses choix d'études. Un vrai soulagement pour toute la famille." },
+]
+
 const comparisonItems = [
     "Vous êtes perdu face à vos choix d'études ou de métier.",
     "Vous hésitez entre plusieurs filières ou formations.",
@@ -34,17 +39,25 @@ const comparisonItems = [
     "Vous souhaitez construire un projet d'avenir qui vous ressemble.",
 ]
 
+const faqs = [
+    { q: "Comment se déroule un accompagnement ?", a: "L'accompagnement se fait en plusieurs séances individuelles, en présentiel ou à distance. Chaque séance dure environ 1h et suit les 5 étapes du parcours : bilan de situation, identification des forces, exploration des possibilités, choix d'orientation, et passage à l'action." },
+    { q: "À partir de quel âge peut-on bénéficier de cet accompagnement ?", a: "L'accompagnement s'adresse aux collégiens, lycéens et jeunes adultes. Il est adapté à chaque profil, que ce soit pour choisir ses spécialités au lycée, préparer Parcoursup ou définir un projet professionnel." },
+    { q: "Quel est le tarif d'une séance ?", a: "La séance est à 50 € et les frais de déplacement sont inclus dans un rayon de 45 km. Le premier rendez-vous est gratuit et sans engagement, pour faire connaissance et définir vos besoins." },
+    { q: "Combien de séances sont nécessaires ?", a: "Le nombre de séances varie selon les besoins de chaque jeune. En général, un accompagnement complet se déroule sur 3 à 6 séances. La flexibilité est au cœur de ma démarche : on avance à votre rythme." },
+]
+
 export default function Home() {
     return (
         <>
-            <style dangerouslySetInnerHTML={{ __html: `
+            <SEOHead page="home" />
+
+            <style>{`
                 .hero-section { position: relative; padding: 140px 30px 90px 30px; background: linear-gradient(135deg, #90D4A0 0%, #C5E8A0 45%, #4EC8C8 100%); }
                 .hero-inner { position: relative; z-index: 2; max-width: 820px; margin: 0 auto; text-align: center; }
                 .hero-title { font-size: 64px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.05; margin: 0 0 28px 0; color: white; }
                 .hero-badges { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-bottom: 36px; }
                 .hero-badge { display: inline-flex; align-items: center; gap: 8px; color: white; font-size: 14px; font-weight: 500; }
                 .hero-badge-check { width: 18px; height: 18px; min-width: 18px; border-radius: 50%; background: rgba(255,255,255,0.35); display: flex; align-items: center; justify-content: center; }
-                .hero-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
                 .hero-cta { display: inline-flex; align-items: center; gap: 8px; padding: 16px 32px; background: white; color: rgb(33,33,33); border-radius: 12px; text-decoration: none; font-weight: 600; box-shadow: 0 10px 30px rgba(33,33,33,0.15); }
                 .hero-photo-block { position: relative; max-width: 900px; margin: 56px auto 0 auto; }
                 .hero-photo-block img.hero-photo { position: relative; z-index: 1; width: 100%; height: auto; display: block; border-radius: 24px; border: 6px solid rgba(255,255,255,0.4); box-shadow: 0 30px 60px rgba(33,33,33,0.2); }
@@ -59,8 +72,8 @@ export default function Home() {
                 .trust-stars { display: flex; gap: 2px; }
                 .trust-badge-row { display: flex; align-items: center; gap: 10px; }
                 .trust-avatars { display: flex; }
-                .trust-avatars span { width: 26px; height: 26px; border-radius: 50%; border: 2px solid white; margin-left: -9px; color: white; font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; text-decoration: none; }
-                .trust-avatars span:first-child { margin-left: 0; }
+                .trust-avatars img { width: 26px; height: 26px; border-radius: 50%; border: 2px solid white; object-fit: cover; margin-left: -9px; }
+                .trust-avatars img:first-child { margin-left: 0; }
                 .trust-score { font-size: 15px; font-weight: 700; color: rgb(33,33,33); line-height: 1; }
                 .trust-score-label { font-size: 10px; color: var(--body-gray); font-weight: 500; }
                 .hero-cloud-wrap { position: relative; z-index: 4; width: 100%; margin-top: -8vw; pointer-events: none; }
@@ -75,13 +88,13 @@ export default function Home() {
                     .curriculum-grid { flex-direction: column; }
                     .curriculum-photo { max-width: 100%; height: 280px; }
                 }
-            ` }} />
+            `}</style>
 
             {/* HERO */}
             <section className="hero-section">
                 <div className="hero-inner">
                     <h1 className="hero-title">
-                        Conseillère d'orientation{" "}
+                        Conseillère en orientation{" "}
                         <span style={{ position: "relative", display: "inline-block", padding: "0 8px" }}>
                             <span style={{
                                 position: "absolute",
@@ -104,10 +117,7 @@ export default function Home() {
                             </span>
                         ))}
                     </div>
-                    <div className="hero-actions">
-                        <a href="/contact" className="hero-cta">Prendre RDV →</a>
-                        <PhoneButton />
-                    </div>
+                    <a href="/contact" className="hero-cta">Prendre RDV →</a>
 
                     <div className="hero-photo-block">
                         <img className="hero-photo" src="/images/hero-photo.png" alt="Adolescente face à un choix d'orientation" width={1690} height={931} loading="eager" />
@@ -118,12 +128,14 @@ export default function Home() {
                                 ))}
                             </div>
                             <div className="trust-badge-row">
-                                <div className="trust-avatars" aria-hidden="true">
-                                    {REVIEWS.map(r => <span key={r.author} style={{ background: r.color }}>{r.initial}</span>)}
+                                <div className="trust-avatars">
+                                    <img src="/images/trust-avatar-1.jpg" alt="" width={400} height={400} />
+                                    <img src="/images/trust-avatar-2.jpg" alt="" width={400} height={400} />
+                                    <img src="/images/trust-avatar-3.jpg" alt="" width={400} height={400} />
                                 </div>
                                 <div style={{ textAlign: "left" }}>
-                                    <div className="trust-score">{RATING.value}/5</div>
-                                    <div className="trust-score-label">Avis Google</div>
+                                    <div className="trust-score">4.9/5</div>
+                                    <div className="trust-score-label">Avis vérifiés</div>
                                 </div>
                             </div>
                         </div>
@@ -173,19 +185,6 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* PARCOURS : une page par étape scolaire */}
-            <section className="section" style={{ paddingTop: 20 }}>
-                <span className="section-label">Où en est votre enfant ?</span>
-                <h2 className="section-title">Un accompagnement adapté à chaque étape du parcours scolaire</h2>
-                <div className="rail-card">
-                    <ParcoursRail />
-                </div>
-                <p style={{ marginTop: 22, fontSize: 16, color: "var(--body-gray)", lineHeight: 1.6 }}>
-                    Quelle que soit la classe, le <a href="/bilan-orientation-scolaire" style={{ color: "#2a9d9d", fontWeight: 600 }}>bilan d'orientation scolaire</a> permet de faire le point
-                    sur ses goûts, ses forces et les formations qui lui correspondent.
-                </p>
-            </section>
-
             {/* CURRICULUM */}
             <section className="section" id="curriculum">
                 <span className="section-label">Déroulement de l'accompagnement</span>
@@ -204,11 +203,34 @@ export default function Home() {
             <section style={{ background: "var(--black)", color: "white" }}>
                 <CoachScolaireSection />
                 <div className="section" style={{ paddingTop: 40, paddingBottom: 100 }}>
-                    <span className="section-label">Avis Google</span>
-                    <h2 style={{ fontSize: 40, fontWeight: 600, letterSpacing: "-0.03em", maxWidth: 800, margin: "0 0 50px" }}>
-                        Ne vous fiez pas seulement à mes paroles : voici ce que disent les jeunes et les familles accompagnés.
+                    <h2 style={{ fontSize: 40, fontWeight: 600, letterSpacing: "-0.03em", maxWidth: 800, marginBottom: 50 }}>
+                        Ne vous fiez pas seulement à mes paroles — voyez ce que mes clients disent de leur parcours.
                     </h2>
-                    <Reviews variant="dark" />
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
+                        {testimonials.map((t, i) => (
+                            <div key={i} style={{
+                                background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)",
+                                borderRadius: 16, padding: 28, display: "flex", flexDirection: "column",
+                            }}>
+                                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
+                                    <div style={{ display: "flex", gap: 3 }}>
+                                        {Array.from({ length: 5 }).map((_, s) => (
+                                            <Star key={s} size={16} fill={s < t.rating ? "#F0B94E" : "none"} color={s < t.rating ? "#F0B94E" : "rgba(255,255,255,0.25)"} />
+                                        ))}
+                                    </div>
+                                    <Quote size={26} color="rgba(255,255,255,0.15)" />
+                                </div>
+                                <p style={{ fontSize: 15, lineHeight: 1.6, marginBottom: 24, flex: 1 }}>{t.text}</p>
+                                <div style={{ display: "flex", alignItems: "center", gap: 12, paddingTop: 20, borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+                                    <img src={t.avatar} alt={t.author} width={400} height={400} loading="lazy" style={{ width: 44, height: 44, borderRadius: "50%", objectFit: "cover", border: "2px solid rgba(255,255,255,0.15)" }} />
+                                    <div>
+                                        <p style={{ fontSize: 14, fontWeight: 600, margin: 0 }}>{t.author}</p>
+                                        <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", margin: 0 }}>{t.role}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </section>
 
@@ -243,33 +265,22 @@ export default function Home() {
                 <span className="section-label">Tarifs transparents</span>
                 <h2 className="section-title">Des tarifs accessibles pour un bilan d'orientation à Dax</h2>
                 <PricingCards />
-                <p style={{ textAlign: "center", marginTop: 34, fontSize: 16 }}>
-                    <a href="/tarifs" style={{ color: "#2a9d9d", fontWeight: 600 }}>Combien de séances prévoir et comparaison avec le CIO gratuit →</a>
-                </p>
             </section>
 
-            {/* ZONE D'INTERVENTION */}
-            <section style={{ background: "var(--light-bg)" }}>
-                <div className="section">
-                    <span className="section-label">Zone d'intervention</span>
-                    <h2 className="section-title">Conseillère d'orientation à domicile autour de Dax, et en visio</h2>
-                    <p style={{ fontSize: 17, lineHeight: 1.7, color: "var(--body-gray)", maxWidth: 760, margin: 0 }}>
-                        Basée à Rivière-Saas-et-Gourby, à une dizaine de kilomètres de Dax, je me déplace à domicile dans un rayon de 45 km,
-                        déplacement inclus dans le prix de la séance. Au-delà, pour les étudiants partis étudier ailleurs ou les familles plus éloignées,
-                        les séances se font en visio, au même tarif.
-                    </p>
-                    <ul className="zone-list">
-                        {ZONE_COMMUNES.map(c => <li key={c}>{c}</li>)}
-                    </ul>
-                </div>
-            </section>
+            {/* LOCAL SEO FAQ */}
+            <LocalSEOSections />
 
             {/* FAQ */}
             <section className="section">
                 <span className="section-label">Une question ?</span>
                 <h2 className="section-title">Vos questions sur l'orientation scolaire à Dax</h2>
-                <div style={{ maxWidth: 800, fontSize: 16, lineHeight: 1.7, color: "var(--body-gray)" }}>
-                    <Faq items={HOME_FAQ} />
+                <div style={{ maxWidth: 720 }}>
+                    {faqs.map((f, i) => (
+                        <details key={i} style={{ padding: "20px 0", borderBottom: "1px solid rgba(33,33,33,0.08)" }}>
+                            <summary style={{ fontWeight: 600, fontSize: 18, cursor: "pointer" }}>{f.q}</summary>
+                            <p style={{ marginTop: 12, color: "var(--body-gray)", lineHeight: 1.6 }}>{f.a}</p>
+                        </details>
+                    ))}
                 </div>
             </section>
         </>

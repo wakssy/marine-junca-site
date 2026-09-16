@@ -1,6 +1,4 @@
 import { Mail } from "lucide-react"
-import { BUSINESS } from "../seo/site"
-import { SERVICE_LINKS } from "./ui"
 
 const SOCIAL_LINKS = {
     linkedin: "https://fr.linkedin.com/in/marine-junca-b53580147",
@@ -30,7 +28,7 @@ function InstagramIcon() {
 export default function Footer() {
     return (
         <>
-            <style dangerouslySetInnerHTML={{ __html: `
+            <style>{`
                 .footer-section {
                     position: relative;
                     width: 100%;
@@ -77,7 +75,7 @@ export default function Footer() {
                 }
                 .footer-bottom {
                     display: flex; align-items: center; justify-content: space-between; gap: 16px;
-                    flex-wrap: wrap; max-width: 1200px; margin: 40px auto 0 auto; padding-bottom: 16px;
+                    flex-wrap: wrap; max-width: 1200px; margin: 70px auto 0 auto; padding-bottom: 16px;
                     text-align: left;
                 }
                 .footer-copyright { font-size: 13px; color: rgba(255,255,255,0.8); }
@@ -94,23 +92,12 @@ export default function Footer() {
                 }
                 .footer-cloud-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
 
-                .footer-cols {
-                    display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 40px; max-width: 1200px;
-                    margin: 70px auto 0 auto; padding: 36px 0 0; border-top: 1px solid rgba(255,255,255,0.35); text-align: left; color: white;
-                }
-                .footer-col-title { font-family: 'Gloria Hallelujah', cursive; font-size: 14px; margin: 0 0 12px; color: white; }
-                .footer-col p, .footer-col a { font-size: 15px; line-height: 1.7; color: white; margin: 0; }
-                .footer-col ul { list-style: none; margin: 0; padding: 0; }
-                .footer-col a { text-decoration: none; }
-                .footer-col a:hover { text-decoration: underline; }
-                .footer-strong { font-weight: 600; }
-                @media (max-width: 900px) { .footer-cols { grid-template-columns: 1fr; gap: 26px; margin-top: 50px; } }
                 @media (max-width: 600px) {
                     .footer-section { padding-top: 70px; }
                     .footer-title { font-size: 28px; }
-                    .footer-bottom { flex-direction: column; align-items: flex-start; margin-top: 36px; }
+                    .footer-bottom { flex-direction: column; align-items: flex-start; margin-top: 50px; }
                 }
-            ` }} />
+            `}</style>
 
             <footer className="footer-section">
                 <div className="footer-intro">
@@ -135,38 +122,9 @@ export default function Footer() {
 
                 <span className="footer-tag">Marine Junca</span>
 
-                <p className="footer-title">Conseillère en orientation scolaire et professionnelle</p>
+                <h2 className="footer-title">Conseillère en orientation scolaire et professionnelle</h2>
 
                 <a href="/contact" className="footer-cta">Me Contacter</a>
-
-                <div className="footer-cols">
-                    <div className="footer-col">
-                        <p className="footer-col-title">Marine Junca Orientation</p>
-                        <p>Conseillère d'orientation scolaire</p>
-                        <p>{BUSINESS.city} ({BUSINESS.postalCode}), près de Dax</p>
-                        <p><a className="footer-strong" href={BUSINESS.phoneHref}>{BUSINESS.phoneDisplay}</a></p>
-                        <p><a href={`mailto:${BUSINESS.email}`}>{BUSINESS.email}</a></p>
-                        <p>Lun-ven 9h-19h · sam 9h-12h</p>
-                    </div>
-                    <nav className="footer-col" aria-label="Accompagnements">
-                        <p className="footer-col-title">Accompagnements</p>
-                        <ul>
-                            {SERVICE_LINKS.filter(l => l.href !== "/tarifs").map(l => (
-                                <li key={l.href}><a href={l.href}>{l.title}</a></li>
-                            ))}
-                        </ul>
-                    </nav>
-                    <nav className="footer-col" aria-label="Informations">
-                        <p className="footer-col-title">Infos pratiques</p>
-                        <ul>
-                            <li><a href="/tarifs">Tarifs</a></li>
-                            <li><a href="/qui-suis-je">Qui suis-je</a></li>
-                            <li><a href="/contact">Prendre rendez-vous</a></li>
-                            <li><a href={BUSINESS.googleReviewsUrl} target="_blank" rel="noopener noreferrer">Avis Google</a></li>
-                        </ul>
-                        <p style={{ marginTop: 10, opacity: 0.85, fontSize: 14 }}>À domicile dans un rayon de 45 km : Dax, Saint-Paul-lès-Dax, Peyrehorade, Saint-Vincent-de-Tyrosse, Soustons, Tartas, Bayonne… et partout en visio.</p>
-                    </nav>
-                </div>
 
                 <div className="footer-bottom">
                     <span className="footer-copyright">© 2026 Marine Junca. Tous droits réservés.</span>

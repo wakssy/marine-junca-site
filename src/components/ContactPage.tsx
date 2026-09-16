@@ -2,7 +2,6 @@ import { useState } from "react"
 import emailjs from "@emailjs/browser"
 import { Mail, Phone, MapPin, Clock, CheckCircle2, AlertCircle } from "lucide-react"
 import MapEmbed from "./MapEmbed"
-import { BUSINESS } from "../seo/site"
 
 const TEAL = "#4EC8C8"
 const GREEN = "#90D4A0"
@@ -18,24 +17,11 @@ export default function ContactPage() {
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
         const form = e.currentTarget // capturé avant l'await : React vide currentTarget après la phase synchrone
-        const data = Object.fromEntries(new FormData(form)) as Record<string, string>
-        // Le modèle EmailJS n'affiche que {{name}}, {{email}} et {{message}} : les infos de qualification
-        // sont donc regroupées en tête du message pour apparaître sans modifier le modèle.
-        const message = [
-            `Classe / situation : ${data.classe || "non précisé"}`,
-            `Commune : ${data.commune || "non précisé"}`,
-            `Téléphone : ${data.phone || "non précisé"}`,
-            `Format souhaité : ${data.format || "non précisé"}`,
-            "",
-            data.message,
-        ].join("\n")
         setStatus("sending")
         try {
-            await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, { ...data, message }, { publicKey: EMAILJS_PUBLIC_KEY })
+            await emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, form, { publicKey: EMAILJS_PUBLIC_KEY })
             setStatus("success")
             form.reset()
-            // Page de remerciement dédiée : permet de compter les demandes envoyées dans les statistiques de visite
-            window.location.assign("/merci")
         } catch {
             setStatus("error")
         }
@@ -43,7 +29,7 @@ export default function ContactPage() {
 
     return (
         <>
-            <style dangerouslySetInnerHTML={{ __html: `
+            <style>{`
                 .contact-wrapper {
                     width: 100%;
                     font-family: 'Funnel Display', sans-serif;
@@ -194,7 +180,7 @@ export default function ContactPage() {
                     font-weight: 500;
                     color: rgb(33,33,33);
                 }
-                .form-field input, .form-field textarea, .form-field select {
+                .form-field input, .form-field textarea {
                     width: 100%;
                     padding: 14px 16px;
                     border-radius: 10px;
@@ -207,8 +193,7 @@ export default function ContactPage() {
                     outline: none;
                     transition: border-color 0.2s ease, background 0.2s ease;
                 }
-                .form-field .optional { color: rgba(33,33,33,0.45); font-weight: 400; }
-                .form-field input:focus, .form-field textarea:focus, .form-field select:focus {
+                .form-field input:focus, .form-field textarea:focus {
                     border-color: ${TEAL};
                     background: white;
                 }
@@ -260,14 +245,13 @@ export default function ContactPage() {
                     }
                     .form-field.full { grid-column: span 1; }
                 }
-            ` }} />
+            `}</style>
 
             <div className="contact-wrapper">
 
                 {/* Hero */}
                 <div className="contact-hero">
-                    <h1>Prendre rendez-vous</h1>
-                    <p style={{ color: "white", fontSize: 20, margin: "18px auto 0", maxWidth: 620, lineHeight: 1.5 }}>Le premier rendez-vous est gratuit et sans engagement. Appelez-moi ou laissez un message, je vous réponds au plus vite.</p>
+                    <h1>Entrer en contact</h1>
                 </div>
 
                 {/* Section carte + infos */}
@@ -294,15 +278,14 @@ export default function ContactPage() {
                                 <div className="contact-card-icon"><Phone size={20} /></div>
                                 <div>
                                     <p className="contact-card-label">Téléphone</p>
-                                    <a href={BUSINESS.phoneHref} className="contact-text" style={{ fontWeight: 600, fontSize: 17 }}>{BUSINESS.phoneDisplay}</a>
+                                    <a href="tel:+33640452328" className="contact-text">+33 06 40 45 23 28</a>
                                 </div>
                             </div>
                             <div className="contact-card">
                                 <div className="contact-card-icon"><MapPin size={20} /></div>
                                 <div>
                                     <p className="contact-card-label">Zone d'intervention</p>
-                                    <p className="contact-text">À domicile dans un rayon de 45 km autour de Rivière-Saas-et-Gourby (40180), près de Dax</p>
-                                    <p className="contact-text" style={{ color: "rgba(33,33,33,0.5)", marginTop: 4 }}>Partout en visio au-delà</p>
+                                    <p className="contact-text">Rivière-Saas-et-Gourby (40), Landes — Nouvelle-Aquitaine</p>
                                 </div>
                             </div>
                             <div className="contact-card">
@@ -311,6 +294,7 @@ export default function ContactPage() {
                                     <p className="contact-card-label">Disponibilités</p>
                                     <p className="contact-text">Lundi – Vendredi : 9h – 19h</p>
                                     <p className="contact-text">Samedi : 9h - 12h</p>
+                                    <p className="contact-text" style={{ color: "rgba(33,33,33,0.5)", marginTop: 4 }}>Déplacement inclus dans un rayon de 45 km</p>
                                 </div>
                             </div>
                         </div>
@@ -325,45 +309,16 @@ export default function ContactPage() {
                     </div>
                     <form className="form-grid" onSubmit={handleSubmit}>
                         <div className="form-field">
-                            <label htmlFor="f-name">Votre prénom et nom</label>
-                            <input id="f-name" type="text" name="name" autoComplete="name" placeholder="Marie Dupont" required />
+                            <label>Votre prénom et nom</label>
+                            <input type="text" name="name" placeholder="Marie Dupont" required />
                         </div>
                         <div className="form-field">
-                            <label htmlFor="f-email">Votre adresse email</label>
-                            <input id="f-email" type="email" name="email" autoComplete="email" placeholder="marie@email.com" required />
-                        </div>
-                        <div className="form-field">
-                            <label htmlFor="f-phone">Téléphone <span className="optional">(facultatif)</span></label>
-                            <input id="f-phone" type="tel" name="phone" autoComplete="tel" placeholder="06 12 34 56 78" />
-                        </div>
-                        <div className="form-field">
-                            <label htmlFor="f-commune">Votre commune</label>
-                            <input id="f-commune" type="text" name="commune" autoComplete="address-level2" placeholder="Dax" />
-                        </div>
-                        <div className="form-field">
-                            <label htmlFor="f-classe">Classe de votre enfant</label>
-                            <select id="f-classe" name="classe" defaultValue="" required>
-                                <option value="" disabled>Choisir…</option>
-                                <option>4e</option>
-                                <option>3e</option>
-                                <option>Seconde</option>
-                                <option>Première</option>
-                                <option>Terminale</option>
-                                <option>Étudiant(e) / après le bac</option>
-                                <option>Autre</option>
-                            </select>
-                        </div>
-                        <div className="form-field">
-                            <label htmlFor="f-format">Format souhaité</label>
-                            <select id="f-format" name="format" defaultValue="Pas de préférence">
-                                <option>Pas de préférence</option>
-                                <option>À domicile</option>
-                                <option>En visio</option>
-                            </select>
+                            <label>Votre adresse email</label>
+                            <input type="email" name="email" placeholder="marie@email.com" required />
                         </div>
                         <div className="form-field full">
-                            <label htmlFor="f-message">Parlez-moi de la situation de votre enfant</label>
-                            <textarea id="f-message" name="message" placeholder="Mon enfant est en terminale et hésite entre..." required />
+                            <label>Parlez-moi de la situation de votre enfant et de l'offre qui vous intéresse</label>
+                            <textarea name="message" placeholder="Mon enfant est en terminale et hésite entre..." required />
                         </div>
                         <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
                             <button type="submit" className="form-submit" disabled={status === "sending"}>

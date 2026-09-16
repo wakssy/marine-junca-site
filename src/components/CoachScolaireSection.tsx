@@ -35,7 +35,7 @@ export default function CoachScolaireSection() {
 
     return (
         <>
-            <style dangerouslySetInnerHTML={{ __html: `
+            <style>{`
                 .coach-section {
                     width: 100%;
                     background: white;
@@ -213,7 +213,7 @@ export default function CoachScolaireSection() {
                     .coach-title { font-size: 32px; }
                     .coach-cta { flex-direction: column; align-items: flex-start; }
                 }
-            ` }} />
+            `}</style>
 
             <section className="coach-section" id="coach-scolaire" aria-label="Coach scolaire - Marine Junca">
                 <div className="coach-inner">
