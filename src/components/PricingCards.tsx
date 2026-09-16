@@ -27,7 +27,7 @@ export default function PricingCards() {
 
     return (
         <>
-            <style>{`
+            <style dangerouslySetInnerHTML={{ __html: `
                 .pricing-grid {
                     display: grid;
                     grid-template-columns: repeat(2, 1fr);
@@ -46,7 +46,7 @@ export default function PricingCards() {
                         transform: none !important;
                     }
                 }
-            `}</style>
+            ` }} />
             <div className="pricing-grid">
                 {cards.map((card, i) => (
                     <div key={i} className={card.highlighted ? "pricing-card-highlight" : ""} style={{

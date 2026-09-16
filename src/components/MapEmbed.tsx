@@ -17,7 +17,7 @@ export default function MapEmbed({
 
     return (
         <>
-            <style>{`
+            <style dangerouslySetInnerHTML={{ __html: `
                 .map-container {
                     position: relative;
                     width: 100%;
@@ -85,7 +85,7 @@ export default function MapEmbed({
                     .map-badge { flex-direction: column; align-items: stretch; }
                     .map-directions { justify-content: center; }
                 }
-            `}</style>
+            ` }} />
             <div className="map-container">
                 <iframe
                     src={mapUrl}
