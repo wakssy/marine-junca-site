@@ -20,7 +20,7 @@ export default function AccordionCard({ etape, module, titre, description }: {
 
     return (
         <>
-            <style>{`
+            <style dangerouslySetInnerHTML={{ __html: `
                 .accordion-card {
                     background: white;
                     border-radius: 10px;
@@ -54,7 +54,7 @@ export default function AccordionCard({ etape, module, titre, description }: {
                         padding: 16px;
                     }
                 }
-            `}</style>
+            ` }} />
             <div className="accordion-card">
                 <div className="accordion-header" onClick={() => setOpen(o => !o)}>
                     <div style={{ display: "flex", flexDirection: "column", gap: "8px", flex: 1 }}>

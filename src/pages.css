@@ -1,0 +1,268 @@
+/* Styles partagés des pages de services, de la navigation mobile d'appel et des blocs réutilisables.
+   Même identité que l'accueil : dégradé vert/turquoise, Funnel Display, annotations manuscrites Gloria Hallelujah. */
+
+:root {
+  --gradient: linear-gradient(135deg, #90D4A0 0%, #C5E8A0 45%, #4EC8C8 100%);
+  --teal-dark: #2a9d9d;
+  --green-dark: #2d7a4f;
+  --star: #F0B94E;
+  --line: rgba(33, 33, 33, 0.08);
+}
+
+:focus-visible {
+  outline: 3px solid var(--teal);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+
+/* ---------- Boutons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 15px 26px; border-radius: 12px; font-weight: 600; font-size: 15px;
+  text-decoration: none; white-space: nowrap; font-family: inherit; cursor: pointer; border: none;
+  transition: transform 0.2s ease, opacity 0.2s ease, background 0.2s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-white { background: white; color: var(--black); box-shadow: 0 10px 30px rgba(33,33,33,0.15); }
+.btn-ghost { background: rgba(255,255,255,0.18); color: white; border: 1.5px solid rgba(255,255,255,0.7); }
+.btn-ghost:hover { background: rgba(255,255,255,0.28); }
+.btn-dark { background: var(--black); color: white; }
+.btn-outline { background: white; color: var(--black); border: 1.5px solid rgba(33,33,33,0.15); }
+.btn-teal { background: var(--teal); color: white; }
+
+/* ---------- Surlignage manuscrit (repris du titre de l'accueil) ---------- */
+.mark { position: relative; display: inline-block; padding: 0 8px; z-index: 0; }
+.mark::before {
+  content: ""; position: absolute; left: -2px; right: -2px; top: 13%; bottom: 6%;
+  background: rgba(144,212,160,0.6); border-radius: 8px; z-index: -1;
+}
+
+/* ---------- Hero des pages ---------- */
+.ph { background: var(--gradient); padding: 150px 40px 150px; }
+.ph-inner { max-width: 1200px; margin: 0 auto; }
+.ph-crumbs { display: flex; flex-wrap: wrap; gap: 8px; font-size: 14px; color: rgba(255,255,255,0.85); margin-bottom: 26px; }
+.ph-crumbs a { color: white; text-decoration: none; font-weight: 500; }
+.ph-crumbs a:hover { text-decoration: underline; }
+.ph-eyebrow { display: block; font-family: 'Gloria Hallelujah', cursive; color: white; font-size: 16px; margin-bottom: 10px; }
+.ph-title { font-size: 60px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.06; color: white; margin: 0 0 24px; max-width: 900px; }
+.ph-intro { font-size: 20px; line-height: 1.55; color: white; max-width: 680px; margin: 0 0 34px; }
+.ph-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 30px; }
+.ph-chips { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px 22px; }
+.ph-chips li { display: inline-flex; align-items: center; gap: 8px; color: white; font-size: 14px; font-weight: 500; }
+.ph-chips li::before {
+  content: ""; width: 18px; height: 18px; border-radius: 50%;
+  background: rgba(255,255,255,0.35) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='8' viewBox='0 0 10 8'%3E%3Cpath d='M1 4L3.5 6.5L9 1' stroke='white' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 9px no-repeat;
+}
+.cloud { position: relative; z-index: 2; margin-top: -8vw; pointer-events: none; }
+.cloud img { display: block; width: 100%; height: auto; }
+
+/* ---------- Rail du parcours scolaire (élément signature) ---------- */
+.rail { position: relative; }
+.rail ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); position: relative; }
+.rail ol::before {
+  content: ""; position: absolute; left: 10%; right: 10%; top: 58px; height: 0;
+  border-top: 3px dashed rgba(78,200,200,0.55);
+}
+.rail li { position: relative; text-align: center; padding: 0 6px; }
+.rail-here {
+  height: 40px; display: flex; align-items: flex-end; justify-content: center; gap: 2px;
+  font-family: 'Gloria Hallelujah', cursive; font-size: 13px; color: var(--teal-dark); white-space: nowrap;
+}
+.rail-stop { display: flex; flex-direction: column; align-items: center; gap: 10px; text-decoration: none; color: var(--black); padding: 0 4px 6px; border-radius: 14px; }
+.rail-dot {
+  width: 36px; height: 36px; border-radius: 50%; background: white; border: 3px solid var(--teal);
+  display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--teal-dark);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.rail-stop:hover .rail-dot { transform: scale(1.12); }
+.rail-label { font-size: 19px; font-weight: 600; letter-spacing: -0.02em; }
+.rail-hint { font-size: 14px; color: var(--body-gray); line-height: 1.35; }
+.rail li.is-current .rail-dot { background: var(--teal); color: white; box-shadow: 0 0 0 6px rgba(78,200,200,0.2); }
+.rail li.is-current .rail-label { color: var(--teal-dark); }
+
+.rail-card { background: white; border: 1px solid var(--line); border-radius: 24px; padding: 18px 28px 30px; box-shadow: 0 20px 50px rgba(33,33,33,0.06); }
+
+/* ---------- Corps de page ---------- */
+.page-body { max-width: 1200px; margin: 0 auto; padding: 40px 40px 90px; display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 70px; align-items: start; }
+.page-rail { max-width: 1200px; margin: 0 auto; padding: 10px 40px 20px; }
+
+.prose { font-size: 17px; line-height: 1.7; color: var(--body-gray); }
+.prose > :first-child { margin-top: 0; }
+.prose h2 { font-size: 36px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.18; color: var(--black); margin: 64px 0 18px; }
+.prose h3 { font-size: 21px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.3; color: var(--black); margin: 32px 0 8px; }
+.prose p { margin: 0 0 16px; }
+.prose strong { color: var(--black); font-weight: 600; }
+.prose a:not(.btn) { color: var(--teal-dark); font-weight: 500; text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+.prose ul { list-style: none; padding: 0; margin: 0 0 20px; }
+.prose ul li { position: relative; padding-left: 34px; margin-bottom: 10px; }
+.prose ul li::before {
+  content: ""; position: absolute; left: 0; top: 4px; width: 22px; height: 22px; border-radius: 50%;
+  background: var(--teal) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='8' viewBox='0 0 10 8'%3E%3Cpath d='M1 4L3.5 6.5L9 1' stroke='white' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 10px no-repeat;
+}
+.lead { font-size: 20px; line-height: 1.6; color: var(--black); }
+
+.cards-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 22px 0 10px; }
+.cards-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 22px 0 10px; }
+.info-card { background: var(--light-bg); border-radius: 18px; padding: 24px; }
+.info-card h3 { margin-top: 0; font-size: 19px; }
+.info-card p { margin: 0; font-size: 15px; line-height: 1.6; }
+.info-card .tag { display: inline-block; font-size: 12px; font-weight: 600; color: var(--green-dark); background: rgba(144,212,160,0.3); padding: 4px 10px; border-radius: 100px; margin-bottom: 12px; }
+
+.note { background: var(--light-bg); border-radius: 18px; padding: 22px 24px; margin: 24px 0; font-size: 15px; line-height: 1.6; }
+.note-label { display: block; font-family: 'Gloria Hallelujah', cursive; color: var(--teal-dark); font-size: 14px; margin-bottom: 4px; }
+
+/* Étapes chronologiques (calendriers, déroulé) */
+.timeline { list-style: none; padding: 0; margin: 24px 0; counter-reset: step; }
+.timeline li { position: relative; padding: 0 0 26px 62px; counter-increment: step; }
+.timeline li::before {
+  content: counter(step); position: absolute; left: 0; top: 0; width: 40px; height: 40px; border-radius: 12px;
+  background: var(--gradient); color: white; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 16px;
+}
+.timeline li::after { content: ""; position: absolute; left: 19px; top: 46px; bottom: 6px; border-left: 2px dashed rgba(78,200,200,0.45); }
+.timeline li:last-child { padding-bottom: 0; }
+.timeline li:last-child::after { display: none; }
+.timeline .when { display: block; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--teal-dark); margin-bottom: 2px; }
+.timeline .what { display: block; font-size: 18px; font-weight: 600; color: var(--black); margin-bottom: 4px; }
+
+/* Tableau comparatif */
+.compare { width: 100%; border-collapse: separate; border-spacing: 0; margin: 20px 0; font-size: 15px; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+.compare th, .compare td { padding: 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+.compare thead th { background: var(--light-bg); color: var(--black); font-weight: 600; }
+.compare tbody tr:last-child td, .compare tbody tr:last-child th { border-bottom: none; }
+.compare tbody th { color: var(--black); font-weight: 600; width: 32%; }
+.table-scroll { overflow-x: auto; }
+
+/* FAQ */
+.faq { margin-top: 10px; }
+.faq details { border-bottom: 1px solid var(--line); padding: 18px 0; }
+.faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 20px; align-items: center; font-size: 18px; font-weight: 600; color: var(--black); letter-spacing: -0.01em; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after {
+  content: "+"; flex-shrink: 0; width: 32px; height: 32px; border-radius: 9px; background: var(--black); color: white;
+  display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 400; transition: background 0.2s ease, transform 0.2s ease;
+}
+.faq details[open] summary::after { content: "−"; background: var(--teal); }
+.faq details p { margin: 12px 0 0; }
+
+/* ---------- Carte de réservation (colonne latérale) ---------- */
+.booking { position: sticky; top: 120px; background: white; border: 1px solid var(--line); border-radius: 22px; padding: 28px; box-shadow: 0 24px 60px rgba(33,33,33,0.1); }
+.booking-eyebrow { font-family: 'Gloria Hallelujah', cursive; font-size: 14px; color: var(--teal-dark); }
+.booking-title { font-size: 26px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; margin: 6px 0 10px; color: var(--black); }
+.booking-text { font-size: 15px; line-height: 1.55; color: var(--body-gray); margin: 0 0 20px; }
+.booking-price { display: flex; align-items: baseline; gap: 6px; padding: 14px 0; margin-bottom: 18px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.booking-price strong { font-size: 38px; font-weight: 800; letter-spacing: -0.04em; color: var(--black); line-height: 1; }
+.booking-price span { font-size: 14px; color: var(--body-gray); }
+.booking .btn { width: 100%; margin-bottom: 10px; }
+.booking-rating { display: flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 14px; color: var(--body-gray); text-decoration: none; }
+.booking-rating strong { color: var(--black); }
+.booking-hours { font-size: 13px; color: rgba(33,33,33,0.55); margin: 10px 0 0; }
+.stars { display: inline-flex; gap: 2px; color: var(--star); letter-spacing: 1px; }
+
+/* ---------- Avis ---------- */
+.reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+.review { display: flex; flex-direction: column; border-radius: 18px; padding: 26px; }
+.review-light { background: var(--light-bg); }
+.review-dark { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); }
+.review-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.review-source { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 100px; }
+.review-light .review-source { background: white; color: var(--body-gray); }
+.review-dark .review-source { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); }
+.review-text { font-size: 15px; line-height: 1.6; margin: 0 0 22px; flex: 1; }
+.review-light .review-text { color: var(--black); }
+.review-author { display: flex; align-items: center; gap: 12px; padding-top: 18px; }
+.review-light .review-author { border-top: 1px solid var(--line); }
+.review-dark .review-author { border-top: 1px solid rgba(255,255,255,0.08); }
+.review-avatar { width: 42px; height: 42px; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 17px; }
+.review-name { display: block; font-size: 14px; font-weight: 600; margin: 0; }
+.review-date { display: block; font-size: 13px; margin: 0; opacity: 0.6; }
+.reviews-more { display: inline-flex; align-items: center; gap: 6px; margin-top: 24px; font-weight: 600; font-size: 15px; text-decoration: none; }
+
+/* ---------- Bandeau d'appel à l'action ---------- */
+.cta-band { max-width: 1200px; margin: 0 auto 100px; padding: 0 40px; }
+.cta-band-inner { position: relative; overflow: hidden; background: var(--black); color: white; border-radius: 28px; padding: 56px; display: flex; justify-content: space-between; align-items: center; gap: 30px; flex-wrap: wrap; }
+.cta-band-inner::after { content: ""; position: absolute; right: -80px; top: -80px; width: 260px; height: 260px; border-radius: 50%; background: rgba(144,212,160,0.18); pointer-events: none; }
+.cta-band h2 { font-size: 38px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; margin: 0 0 10px; max-width: 560px; }
+.cta-band p { margin: 0; color: rgba(255,255,255,0.7); font-size: 17px; max-width: 520px; line-height: 1.55; }
+.cta-band-actions { position: relative; z-index: 1; display: flex; gap: 12px; flex-wrap: wrap; }
+.cta-band .btn-ghost { border-color: rgba(255,255,255,0.35); background: transparent; }
+
+/* ---------- Pages liées ---------- */
+.related { max-width: 1200px; margin: 0 auto; padding: 0 40px 70px; }
+.related-title { font-size: 28px; font-weight: 600; letter-spacing: -0.03em; margin: 0 0 20px; }
+.related-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+.related-card { display: flex; flex-direction: column; gap: 6px; padding: 22px; border-radius: 18px; border: 1px solid var(--line); text-decoration: none; color: var(--black); background: white; transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+.related-card:hover { border-color: var(--teal); transform: translateY(-3px); box-shadow: 0 14px 30px rgba(33,33,33,0.06); }
+.related-card strong { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
+.related-card span { font-size: 14px; color: var(--body-gray); line-height: 1.5; }
+.related-card em { font-style: normal; color: var(--teal-dark); font-weight: 600; font-size: 14px; margin-top: 4px; }
+
+/* ---------- Zone d'intervention ---------- */
+.zone-list { list-style: none; padding: 0; margin: 20px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.zone-list li { background: white; border: 1px solid var(--line); border-radius: 100px; padding: 7px 14px; font-size: 14px; color: var(--black); }
+
+/* ---------- Barre d'appel mobile ---------- */
+.callbar { display: none; }
+@media (max-width: 900px) {
+  .callbar {
+    display: flex; gap: 8px; position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 998;
+    background: white; padding: 8px; border-radius: 18px; box-shadow: 0 10px 40px rgba(33,33,33,0.22);
+  }
+  .callbar .btn { flex: 1; padding: 13px 10px; font-size: 15px; }
+  body { padding-bottom: 76px; }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1000px) {
+  .page-body { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+  .booking { position: static; }
+}
+@media (max-width: 900px) {
+  .ph { padding: 120px 20px 110px; }
+  .ph-title { font-size: 38px; }
+  .ph-intro { font-size: 17px; }
+  .page-body { padding: 20px 20px 60px; }
+  .page-rail { padding: 0 20px 10px; }
+  .prose h2 { font-size: 28px; margin-top: 48px; }
+  .cards-3 { grid-template-columns: 1fr; }
+  .cta-band { padding: 0 20px; margin-bottom: 60px; }
+  .cta-band-inner { padding: 34px 26px; }
+  .cta-band h2 { font-size: 28px; }
+  .related { padding: 0 20px 50px; }
+
+  .rail ol { grid-template-columns: 1fr; gap: 4px; }
+  .rail ol::before { left: 17px; right: auto; top: 20px; bottom: 20px; height: auto; border-top: none; border-left: 3px dashed rgba(78,200,200,0.55); }
+  .rail li { text-align: left; padding: 0; }
+  .rail-here { display: none; }
+  .rail-stop { flex-direction: row; align-items: center; gap: 14px; padding: 8px 0; }
+  .rail-dot { flex-shrink: 0; }
+  .rail-text { display: flex; flex-direction: column; }
+  .rail-label { font-size: 17px; }
+  .rail-card { padding: 14px 18px; }
+}
+@media (max-width: 600px) {
+  .cards-2 { grid-template-columns: 1fr; }
+  .ph-actions .btn { width: 100%; }
+  .rail-here svg { display: none; }
+}
+
+/* ---------- Page Qui suis-je ---------- */
+.about-grid { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 60px; align-items: center; }
+.about-photo { position: relative; }
+.about-photo::before { content: ""; position: absolute; inset: 18px -18px -18px 18px; border-radius: 32px; background: rgba(255,255,255,0.3); }
+.about-photo img { position: relative; display: block; width: 100%; height: auto; border-radius: 32px; border: 6px solid rgba(255,255,255,0.5); box-shadow: 0 30px 60px rgba(33,33,33,0.18); }
+.about-quote { margin: 0 0 24px; font-size: 26px; line-height: 1.35; font-weight: 500; letter-spacing: -0.02em; color: var(--black); }
+@media (max-width: 900px) {
+  .about-grid { grid-template-columns: 1fr; gap: 40px; }
+  .about-photo { max-width: 300px; }
+  .about-quote { font-size: 21px; }
+}
+
+/* ---------- Pages simples (merci, 404) ---------- */
+.simple-page { max-width: 720px; margin: 0 auto; padding: 60px 20px 100px; text-align: center; }
+.simple-page h2 { font-size: 30px; letter-spacing: -0.03em; margin: 0 0 14px; }
+.simple-page p { color: var(--body-gray); font-size: 17px; line-height: 1.6; }
+.simple-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 26px; }

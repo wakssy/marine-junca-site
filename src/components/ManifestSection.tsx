@@ -11,7 +11,7 @@ const citations = [
 export default function ManifestSection() {
     return (
         <>
-            <style>{`
+            <style dangerouslySetInnerHTML={{ __html: `
                 .manifest-section {
                     width: 100%;
                     background: rgb(235, 238, 243);
@@ -96,7 +96,7 @@ export default function ManifestSection() {
                     .manifest-text { font-size: 17px; }
                     .manifest-card { padding: 24px; flex-direction: column; }
                 }
-            `}</style>
+            ` }} />
 
             <section className="manifest-section" aria-label="Philosophie de Marine Junca">
                 <div className="manifest-inner">

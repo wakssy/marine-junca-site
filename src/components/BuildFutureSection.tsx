@@ -1,4 +1,7 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useEffect, useLayoutEffect as useClientLayoutEffect, useRef, useState } from "react"
+
+// useLayoutEffect ne s'exécute pas au pré-rendu serveur : on bascule sur useEffect hors navigateur pour éviter l'avertissement
+const useLayoutEffect = typeof window !== "undefined" ? useClientLayoutEffect : useEffect
 
 const OVERLAP = 4 // px de recouvrement au raccord pour éviter tout interstice au rendu
 
@@ -61,7 +64,7 @@ export default function BuildFutureSection() {
 
     return (
         <>
-            <style>{`
+            <style dangerouslySetInnerHTML={{ __html: `
                 .bfs-wrapper { position: relative; height: 220vh; background: white; }
                 .bfs-sticky { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 0 40px; }
                 .bfs-stage { position: relative; width: 100%; max-width: 1000px; margin: 0 auto; aspect-ratio: 983 / 560; border-radius: 10px; overflow: hidden; }
@@ -73,7 +76,7 @@ export default function BuildFutureSection() {
                 @media (max-width: 900px) {
                     .bfs-wrapper { height: 180vh; }
                 }
-            `}</style>
+            ` }} />
             <div className="bfs-wrapper" ref={wrapperRef}>
                 <div className="bfs-sticky">
                     <div className="bfs-stage" ref={stageRef}>
