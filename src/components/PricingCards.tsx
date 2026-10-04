@@ -1,98 +1,145 @@
+import { Signpost, Library, HandCoins, Car } from "lucide-react"
+import { CtaLink, CheckIcon, Mark, delay } from "./ui"
+import { BUSINESS } from "../seo/site"
 
-const GREEN = "#90D4A0"
+// Contenu repris du flyer de Marine : deux accompagnements présentés côte à côte
+const services = [
+    {
+        key: "orientation",
+        icon: Signpost,
+        title: "Orientation",
+        subtitle: "Trouver sa voie",
+        description: "Un accompagnement personnalisé pour mieux se connaître et construire un projet qui a du sens.",
+        features: [
+            <>Bilan d'orientation <span className="svc-note">(intérêts, valeurs, forces)</span></>,
+            "Exploration des métiers et des formations",
+            "Aide Parcoursup",
+            "Réflexion sur les spécialités et les études supérieures",
+            "Préparation aux oraux",
+            "Lettre de motivation et CV",
+        ],
+        price: BUSINESS.sessionPrice,
+        fullPrice: null as number | null,
+        duration: "1 h à 1 h 30",
+        more: { href: "/bilan-orientation-scolaire", label: "Le bilan d'orientation en détail" },
+    },
+    {
+        key: "soutien",
+        icon: Library,
+        title: "Soutien scolaire",
+        subtitle: "Progresser en confiance",
+        description: "Un accompagnement adapté au rythme et aux besoins de chaque jeune, pour consolider les bases, gagner en méthode et en autonomie.",
+        features: [
+            "Aide aux devoirs",
+            "Remise à niveau",
+            "Méthodologie et organisation",
+            "Préparation des contrôles et examens",
+            <>Soutien dans différentes matières <span className="svc-note">(primaire, collège et niveau seconde – lycée)</span></>,
+            "Confiance en soi et motivation",
+        ],
+        price: BUSINESS.tutoringPrice,
+        fullPrice: BUSINESS.tutoringFullPrice as number | null,
+        duration: "1 h 30, après avance immédiate",
+        more: { href: "/soutien-scolaire", label: "Le soutien scolaire en détail" },
+    },
+]
 
+// Le premier rendez-vous gratuit reste l'entrée principale ; viennent ensuite les deux accompagnements,
+// puis l'avance immédiate de crédit d'impôt, qui divise par deux le prix du soutien scolaire.
 export default function PricingCards() {
-    const cards = [
-        {
-            badge: "Découverte",
-            title: "Premier rendez-vous",
-            price: "Gratuit",
-            priceDetail: "sans engagement",
-            description: "Un premier échange pour faire connaissance, comprendre votre situation et définir ensemble les besoins de votre enfant.",
-            features: ["Bilan de la situation actuelle", "Présentation de ma méthode", "Réponses à vos questions", "Sans engagement"],
-            cta: "Prendre RDV",
-            highlighted: false,
-        },
-        {
-            badge: "⭐ Le plus populaire",
-            title: "Séance d'accompagnement",
-            price: "50 €",
-            priceDetail: "par séance",
-            description: "Un accompagnement individuel et personnalisé pour avancer concrètement sur le projet d'orientation de votre enfant.",
-            features: ["Séance d'environ 1 heure", "Outils et tests adaptés", "Frais de déplacement inclus (45 km)", "Présentiel ou à distance"],
-            cta: "Commencer maintenant",
-            highlighted: true,
-        },
-    ]
-
     return (
-        <>
-            <style dangerouslySetInnerHTML={{ __html: `
-                .pricing-grid {
-                    display: grid;
-                    grid-template-columns: repeat(2, 1fr);
-                    gap: 20px;
-                    width: 100%;
-                    max-width: 800px;
-                    margin: 0 auto;
-                    font-family: 'Funnel Display', sans-serif;
-                }
-                @media (max-width: 680px) {
-                    .pricing-grid {
-                        grid-template-columns: 1fr;
-                        max-width: 100%;
-                    }
-                    .pricing-card-highlight {
-                        transform: none !important;
-                    }
-                }
-            ` }} />
-            <div className="pricing-grid">
-                {cards.map((card, i) => (
-                    <div key={i} className={card.highlighted ? "pricing-card-highlight" : ""} style={{
-                        display: "flex", flexDirection: "column",
-                        backgroundColor: card.highlighted ? "rgb(33, 33, 33)" : "rgb(255, 255, 255)",
-                        borderRadius: "16px",
-                        border: card.highlighted ? "none" : "1px solid rgba(33,33,33,0.1)",
-                        padding: "32px", gap: "24px", position: "relative", overflow: "hidden",
-                        boxShadow: card.highlighted ? "0 20px 60px rgba(33,33,33,0.15)" : "none",
-                        transform: card.highlighted ? "scale(1.04)" : "scale(1)",
-                    }}>
-                        {card.highlighted && <div style={{ position: "absolute", top: "-40px", right: "-40px", width: "160px", height: "160px", borderRadius: "50%", backgroundColor: `${GREEN}33` }} />}
-
-                        <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", backgroundColor: card.highlighted ? GREEN : `${GREEN}33`, color: card.highlighted ? "white" : "#2d7a4f", borderRadius: "100px", padding: "5px 12px", fontSize: "13px", fontWeight: 600, width: "fit-content" }}>
-                            {card.badge}
-                        </div>
-
-                        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                            <h3 style={{ fontSize: "22px", fontWeight: 700, color: card.highlighted ? "white" : "rgb(33, 33, 33)", margin: 0, letterSpacing: "-0.03em", lineHeight: "110%" }}>{card.title}</h3>
-                            <p style={{ fontSize: "14px", color: card.highlighted ? "rgba(255,255,255,0.6)" : "rgba(33,33,33,0.5)", margin: 0, lineHeight: "150%" }}>{card.description}</p>
-                        </div>
-
-                        <div style={{ display: "flex", alignItems: "baseline", gap: "6px", padding: "16px 0", borderTop: `1px solid ${card.highlighted ? "rgba(255,255,255,0.1)" : "rgba(33,33,33,0.08)"}`, borderBottom: `1px solid ${card.highlighted ? "rgba(255,255,255,0.1)" : "rgba(33,33,33,0.08)"}` }}>
-                            <span style={{ fontSize: "42px", fontWeight: 800, color: card.highlighted ? GREEN : "rgb(33, 33, 33)", letterSpacing: "-0.04em", lineHeight: "100%" }}>{card.price}</span>
-                            <span style={{ fontSize: "14px", color: card.highlighted ? "rgba(255,255,255,0.5)" : "rgba(33,33,33,0.4)" }}>{card.priceDetail}</span>
-                        </div>
-
-                        <div style={{ display: "flex", flexDirection: "column", gap: "12px", flex: 1 }}>
-                            {card.features.map((f, j) => (
-                                <div key={j} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                                    <div style={{ width: "20px", height: "20px", minWidth: "20px", borderRadius: "50%", backgroundColor: `${GREEN}33`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                        <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke={GREEN} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                                    </div>
-                                    <span style={{ fontSize: "14px", color: card.highlighted ? "rgba(255,255,255,0.8)" : "rgba(33,33,33,0.7)", lineHeight: "140%" }}>{f}</span>
-                                </div>
-                            ))}
-                        </div>
-
-                        <a href="/contact" onClick={(e) => { e.preventDefault(); window.location.assign("/contact") }} style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "14px 24px", borderRadius: "10px", backgroundColor: card.highlighted ? GREEN : "rgb(33, 33, 33)", color: "white", fontSize: "15px", fontWeight: 600, textDecoration: "none", transition: "opacity 0.2s ease", letterSpacing: "-0.01em", fontFamily: "'Funnel Display', sans-serif" }}
-                            onMouseEnter={e => (e.currentTarget.style.opacity = "0.85")}
-                            onMouseLeave={e => (e.currentTarget.style.opacity = "1")}>
-                            {card.cta} →
-                        </a>
-                    </div>
-                ))}
+        <div className="pricing-stack">
+            <div className="pricing-free" data-reveal>
+                <div className="pricing-free-copy">
+                    <span className="price-badge">Découverte</span>
+                    <h3 className="pricing-free-title">Premier rendez-vous gratuit</h3>
+                    <p>Un premier échange pour faire connaissance, comprendre votre situation et définir ensemble les besoins de votre enfant.</p>
+                    <ul className="pricing-free-list">
+                        {["Bilan de la situation actuelle", "Présentation de ma méthode", "Réponses à vos questions", "Sans engagement"].map(f => (
+                            <li key={f}><span className="price-check"><CheckIcon size={9} /></span>{f}</li>
+                        ))}
+                    </ul>
+                </div>
+                <CtaLink variant="teal">Réserver le 1er RDV gratuit</CtaLink>
             </div>
-        </>
+
+            <div className="pricing-grid">
+                {services.map((s, i) => {
+                    const Icon = s.icon
+                    return (
+                        <article
+                            key={s.key}
+                            id={s.key === "soutien" ? "soutien-scolaire" : undefined}
+                            className={`svc svc-${s.key}`}
+                            data-reveal
+                            style={delay(i * 80)}
+                        >
+                            <div className="svc-head">
+                                <span className="svc-icon"><Icon size={26} strokeWidth={1.6} /></span>
+                                <div>
+                                    <h3 className="svc-title">{s.title}</h3>
+                                    <p className="svc-sub">{s.subtitle}</p>
+                                </div>
+                            </div>
+
+                            <p className="svc-desc">{s.description} <a className="svc-more" href={s.more.href}>{s.more.label}</a></p>
+
+                            <ul className="svc-features">
+                                {s.features.map((f, j) => (
+                                    <li key={j}><span className="svc-check"><CheckIcon size={9} /></span><span>{f}</span></li>
+                                ))}
+                            </ul>
+
+                            <div className="svc-price">
+                                <p className="svc-amount">
+                                    <strong>{s.price}&nbsp;€</strong>
+                                    <span>la séance</span>
+                                    {s.fullPrice && <span className="svc-was"><span className="sr-only">au lieu de </span>{s.fullPrice}&nbsp;€</span>}
+                                    {s.fullPrice && <a className="svc-flag" href="#avance-immediate">−50&nbsp;% avec l'avance immédiate</a>}
+                                </p>
+                                <p className="svc-duration">{s.duration}</p>
+                                <p className="svc-travel"><Car size={17} strokeWidth={1.8} aria-hidden="true" /> Frais de déplacement inclus</p>
+                            </div>
+
+                            <CtaLink variant="dark" className="price-cta">Prendre RDV</CtaLink>
+                        </article>
+                    )
+                })}
+            </div>
+
+            <AvanceImmediate />
+        </div>
+    )
+}
+
+export function AvanceImmediate() {
+    return (
+        <section className="advance" id="avance-immediate" aria-labelledby="advance-title" data-reveal>
+            <div className="advance-intro">
+                <span className="advance-icon" aria-hidden="true"><HandCoins size={30} strokeWidth={1.6} /></span>
+                <div>
+                    <h3 className="advance-title" id="advance-title">
+                        Grâce à l'avance immédiate de crédit d'impôt, le soutien scolaire est <Mark>à moitié prix</Mark>
+                    </h3>
+                    <p className="advance-text">
+                        La réduction s'applique dès le paiement de la séance : pas besoin d'avancer la totalité, ni d'attendre un remboursement.
+                    </p>
+                </div>
+            </div>
+            <ol className="advance-steps">
+                <li>
+                    <span className="advance-num" aria-hidden="true">1</span>
+                    <p><strong>Je réserve</strong> ma séance</p>
+                </li>
+                <li>
+                    <span className="advance-num" aria-hidden="true">2</span>
+                    <p>Je ne paie que <strong className="advance-price">{BUSINESS.tutoringPrice}&nbsp;€</strong> la séance <span className="advance-muted">(au lieu de {BUSINESS.tutoringFullPrice}&nbsp;€)</span></p>
+                </li>
+                <li>
+                    <span className="advance-num" aria-hidden="true">3</span>
+                    <p><strong>50&nbsp;% du montant</strong> est directement déduit grâce à l'avance immédiate du crédit d'impôt</p>
+                </li>
+            </ol>
+        </section>
     )
 }

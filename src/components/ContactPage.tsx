@@ -3,6 +3,7 @@ import emailjs from "@emailjs/browser"
 import { Mail, Phone, MapPin, Clock, CheckCircle2, AlertCircle } from "lucide-react"
 import MapEmbed from "./MapEmbed"
 import { BUSINESS } from "../seo/site"
+import { Mark, CloudDivider, delay } from "./ui"
 
 const TEAL = "#4EC8C8"
 const GREEN = "#90D4A0"
@@ -48,28 +49,25 @@ export default function ContactPage() {
                     width: 100%;
                     font-family: 'Funnel Display', sans-serif;
                     background: white;
+                    font-family: var(--font-text);
                 }
 
                 .contact-hero {
-                    padding: 190px 40px 150px 40px;
+                    position: relative; overflow: hidden;
+                    padding: clamp(150px, 15vw, 196px) var(--gutter) clamp(120px, 12vw, 170px);
                     text-align: center;
-                    background: linear-gradient(135deg, #90D4A0 0%, #C5E8A0 45%, #4EC8C8 100%);
+                    background: var(--gradient);
                 }
+                .contact-hero-inner { position: relative; }
                 .contact-hero h1 {
-                    font-size: 64px;
-                    font-weight: 700;
-                    letter-spacing: -0.03em;
-                    line-height: 1.05;
-                    color: white;
+                    font-size: clamp(40px, 6vw, 80px);
+                    font-weight: 600;
+                    letter-spacing: -0.04em;
+                    line-height: 1;
+                    color: var(--ink);
                     margin: 0;
                 }
-                @media (max-width: 900px) {
-                    .contact-hero { padding: 120px 30px 60px 30px; }
-                    .contact-hero h1 { font-size: 42px; }
-                }
-                @media (max-width: 600px) {
-                    .contact-hero h1 { font-size: 32px; }
-                }
+                .contact-hero p { color: rgba(19,41,46,0.82); font-size: clamp(17px, 1.6vw, 20px); margin: 20px auto 0; max-width: 620px; line-height: 1.55; }
 
                 /* Section carte + infos */
                 .contact-top {
@@ -108,13 +106,14 @@ export default function ContactPage() {
                     align-items: center;
                     gap: 6px;
                     font-size: 14px;
-                    color: ${TEAL};
-                    font-family: 'Gloria Hallelujah', cursive;
+                    color: var(--teal-ink);
+                    font-family: var(--font-hand);
                 }
                 .contact-title {
-                    font-size: 36px;
+                    font-family: var(--font-display);
+                    font-size: clamp(28px, 3vw, 38px);
                     font-weight: 600;
-                    color: rgb(33,33,33);
+                    color: var(--ink);
                     letter-spacing: -0.03em;
                     line-height: 125%;
                     margin: 0;
@@ -128,33 +127,39 @@ export default function ContactPage() {
                     display: flex;
                     align-items: flex-start;
                     gap: 16px;
-                    background: rgb(235,238,243);
-                    border: 1px solid rgba(33,33,33,0.06);
-                    border-radius: 16px;
+                    background: var(--paper);
+                    box-shadow: inset 0 0 0 1px var(--line);
+                    border-radius: 20px;
                     padding: 18px 20px;
+                    transition: transform 0.5s var(--ease-spring), box-shadow 0.4s var(--ease-out), background-color 0.3s;
+                }
+                .contact-card:hover {
+                    transform: translateY(-2px);
+                    background: white;
+                    box-shadow: inset 0 0 0 1px var(--line), var(--shadow-sm);
                 }
                 .contact-card-icon {
                     width: 42px; height: 42px; min-width: 42px;
                     border-radius: 12px;
                     display: flex; align-items: center; justify-content: center;
                     background: linear-gradient(135deg, ${GREEN}44, ${TEAL}33);
-                    color: rgb(33,33,33);
+                    color: var(--ink);
                 }
                 .contact-card-label {
                     font-size: 12px;
                     font-weight: 500;
-                    color: rgba(33,33,33,0.5);
+                    color: var(--ink-3);
                     margin: 0 0 4px 0;
                 }
                 .contact-text {
                     font-size: 15px;
-                    color: rgb(33,33,33);
+                    color: var(--ink);
                     line-height: 150%;
                     margin: 0;
                     text-decoration: none;
                     display: block;
                 }
-                .contact-text:hover { color: ${TEAL}; }
+                .contact-text:hover { color: var(--teal-ink); }
 
                 /* Section formulaire */
                 .form-section {
@@ -164,19 +169,19 @@ export default function ContactPage() {
                 }
                 .form-header { max-width: 600px; margin: 0 auto 50px auto; text-align: center; }
                 .form-title {
-                    font-size: 44px;
+                    font-family: var(--font-display);
+                    font-size: clamp(30px, 3.6vw, 46px);
                     font-weight: 600;
-                    color: rgb(33,33,33);
+                    color: var(--ink);
                     letter-spacing: -0.03em;
                     line-height: 120%;
                     margin: 12px 0 0 0;
                 }
                 .form-grid {
                     background: white;
-                    border-radius: 24px;
-                    border: 1px solid rgba(33,33,33,0.08);
-                    box-shadow: 0 20px 60px rgba(33,33,33,0.08);
-                    padding: 50px;
+                    border-radius: 32px;
+                    box-shadow: inset 0 0 0 1px var(--line), var(--shadow-lg);
+                    padding: clamp(24px, 4vw, 50px);
                     display: grid;
                     grid-template-columns: 1fr 1fr;
                     gap: 26px;
@@ -192,44 +197,49 @@ export default function ContactPage() {
                 .form-field label {
                     font-size: 14px;
                     font-weight: 500;
-                    color: rgb(33,33,33);
+                    color: var(--ink);
                 }
                 .form-field input, .form-field textarea, .form-field select {
                     width: 100%;
-                    padding: 14px 16px;
-                    border-radius: 10px;
-                    border: 1px solid rgba(33,33,33,0.12);
-                    background: rgb(250,251,252);
-                    font-size: 15px;
-                    font-family: 'Funnel Display', sans-serif;
-                    color: rgb(33,33,33);
+                    padding: 15px 16px;
+                    border-radius: 14px;
+                    border: 1px solid var(--line-strong);
+                    background: var(--paper);
+                    font-size: 16px;
+                    font-family: var(--font-text);
+                    color: var(--ink);
                     box-sizing: border-box;
                     outline: none;
                     transition: border-color 0.2s ease, background 0.2s ease;
                 }
-                .form-field .optional { color: rgba(33,33,33,0.45); font-weight: 400; }
+                .form-field .optional { color: var(--ink-3); font-weight: 400; }
                 .form-field input:focus, .form-field textarea:focus, .form-field select:focus {
-                    border-color: ${TEAL};
+                    border-color: var(--teal-ink);
                     background: white;
+                    box-shadow: 0 0 0 4px rgba(78,200,200,0.18);
                 }
                 .form-field textarea { resize: vertical; min-height: 120px; }
                 .form-submit {
                     display: inline-flex;
                     align-items: center;
                     gap: 8px;
-                    padding: 14px 30px;
-                    background: rgb(33,33,33);
+                    min-height: 54px;
+                    padding: 0 30px;
+                    background: var(--ink);
                     color: white;
                     border: none;
-                    border-radius: 10px;
-                    font-size: 15px;
+                    border-radius: 999px;
+                    font-size: 15.5px;
                     font-weight: 600;
                     cursor: pointer;
-                    font-family: 'Funnel Display', sans-serif;
-                    transition: transform 0.2s ease, opacity 0.2s ease;
+                    font-family: var(--font-display);
+                    box-shadow: 0 14px 30px -12px rgba(19,41,46,0.55);
+                    transition: transform 0.5s var(--ease-spring), background-color 0.3s;
                     width: fit-content;
                 }
-                .form-submit:hover { opacity: 0.88; transform: translateY(-2px); }
+                .form-submit:hover { background: #0B1D21; transform: translateY(-2px); }
+                .form-submit:active { transform: scale(0.97); }
+                .form-submit:disabled { opacity: 0.6; cursor: progress; transform: none; }
 
                 /* Tablet */
                 @media (max-width: 900px) {
@@ -266,9 +276,13 @@ export default function ContactPage() {
 
                 {/* Hero */}
                 <div className="contact-hero">
-                    <h1>Prendre rendez-vous</h1>
-                    <p style={{ color: "white", fontSize: 20, margin: "18px auto 0", maxWidth: 620, lineHeight: 1.5 }}>Le premier rendez-vous est gratuit et sans engagement. Appelez-moi ou laissez un message, je vous réponds au plus vite.</p>
+                    <div className="ph-glow" aria-hidden="true" />
+                    <div className="contact-hero-inner">
+                        <h1 className="hero-in">Prendre <Mark>rendez-vous</Mark></h1>
+                        <p className="hero-in" style={delay(120)}>Le premier rendez-vous est gratuit et sans engagement. Appelez-moi ou laissez un message, je vous réponds au plus vite.</p>
+                    </div>
                 </div>
+                <CloudDivider />
 
                 {/* Section carte + infos */}
                 <div className="contact-top">
@@ -278,7 +292,7 @@ export default function ContactPage() {
 
                     <div className="contact-info">
                         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-                            <span className="contact-eyebrow">📍 Contact</span>
+                            <span className="contact-eyebrow">Contact</span>
                             <h2 className="contact-title">Prenons contact pour discuter de votre projet d'orientation</h2>
                         </div>
 
@@ -302,7 +316,7 @@ export default function ContactPage() {
                                 <div>
                                     <p className="contact-card-label">Zone d'intervention</p>
                                     <p className="contact-text">À domicile dans un rayon de 45 km autour de Rivière-Saas-et-Gourby (40180), près de Dax</p>
-                                    <p className="contact-text" style={{ color: "rgba(33,33,33,0.5)", marginTop: 4 }}>Partout en visio au-delà</p>
+                                    <p className="contact-text" style={{ color: "var(--ink-3)", marginTop: 4 }}>Partout en visio au-delà</p>
                                 </div>
                             </div>
                             <div className="contact-card">

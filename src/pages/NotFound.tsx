@@ -1,4 +1,4 @@
-import { SERVICE_LINKS } from "../components/ui"
+import { SERVICE_LINKS, CloudDivider } from "../components/ui"
 
 export default function NotFound() {
     return (
@@ -10,7 +10,7 @@ export default function NotFound() {
                     <p className="ph-intro" style={{ margin: "0 auto" }}>Elle a peut-être été déplacée. Voici où trouver ce que vous cherchez.</p>
                 </div>
             </section>
-            <div className="cloud"><img src="/images/cloud-divider.png" alt="" width={6400} height={1026} /></div>
+            <CloudDivider />
             <section className="related" style={{ paddingTop: 30 }}>
                 <div className="related-grid">
                     <a href="/" className="related-card"><strong>Accueil</strong><span>Conseillère d'orientation scolaire à Dax.</span><em>Y aller →</em></a>

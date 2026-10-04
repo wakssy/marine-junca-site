@@ -18,6 +18,9 @@ export const BUSINESS = {
     lng: -1.188472,
     radiusKm: 45,
     sessionPrice: 50,
+    // Soutien scolaire : séance de 1 h 30 à 60 €, dont 50 % déduits tout de suite grâce à l'avance immédiate de crédit d'impôt
+    tutoringPrice: 30,
+    tutoringFullPrice: 60,
     // Lien de recherche Google Maps vers la fiche (la page de la fiche elle-même n'a pas d'URL stable publique)
     googleReviewsUrl: "https://www.google.com/maps/search/?api=1&query=Marine%20Junca%20orientation%20Rivi%C3%A8re-Saas-et-Gourby",
     linkedin: "https://fr.linkedin.com/in/marine-junca-b53580147",
@@ -47,7 +50,7 @@ export const REVIEWS = [
         initial: "L",
         color: "#6C8A9B",
         date: "septembre 2026",
-        text: "Marine est personne extrêmement bienveillante et à l'écoute des jeunes qu'elle conseille. Riche d'expérience, elle sait s'adresser à eux et les orienter pour le mieux ! Je recommande fortement ces services tant en matière d'orientation que de coaching personnel !",
+        text: "Marine est une personne extrêmement bienveillante et à l'écoute des jeunes qu'elle conseille. Riche d'expérience, elle sait s'adresser à eux et les orienter pour le mieux ! Je recommande fortement ces services tant en matière d'orientation que de coaching personnel !",
         excerpt: false,
     },
     {

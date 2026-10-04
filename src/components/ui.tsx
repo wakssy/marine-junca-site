@@ -1,7 +1,13 @@
-import type { ReactNode } from "react"
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react"
 import { BUSINESS, REVIEWS, RATING } from "../seo/site"
+import { useFocusableScroller } from "../lib/scroller"
 
 // ---------- Petits éléments ----------
+
+// Délai d'apparition (ms) pour les éléments [data-reveal] : style={delay(120)}
+export function delay(ms: number): CSSProperties {
+    return { "--d": ms } as CSSProperties
+}
 
 export function Mark({ children }: { children: ReactNode }) {
     return <span className="mark">{children}</span>
@@ -25,7 +31,38 @@ export function PhoneIcon({ size = 17 }: { size?: number }) {
     )
 }
 
-export function PhoneButton({ variant = "ghost", label }: { variant?: "ghost" | "outline" | "dark"; label?: string }) {
+export function ArrowIcon({ size = 16 }: { size?: number }) {
+    return (
+        <svg width={size} height={size} viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+    )
+}
+
+export function CheckIcon({ size = 10 }: { size?: number }) {
+    return (
+        <svg width={size} height={size * 0.8} viewBox="0 0 10 8" fill="none" aria-hidden="true">
+            <path d="M1 4L3.5 6.5L9 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+    )
+}
+
+// Bouton principal : pastille avec la flèche dans son propre cercle
+export function CtaLink({ href = "/contact", variant = "dark", children, className = "" }: {
+    href?: string
+    variant?: "dark" | "white" | "ghost" | "outline" | "teal"
+    children: ReactNode
+    className?: string
+}) {
+    return (
+        <a href={href} className={`btn btn-${variant} btn-arrow ${className}`.trim()}>
+            <span>{children}</span>
+            <span className="btn-icon"><ArrowIcon size={15} /></span>
+        </a>
+    )
+}
+
+export function PhoneButton({ variant = "ghost", label }: { variant?: "ghost" | "outline" | "dark" | "white"; label?: string }) {
     return (
         <a href={BUSINESS.phoneHref} className={`btn btn-${variant}`} aria-label={`Appeler Marine Junca au ${BUSINESS.phoneDisplay}`}>
             <PhoneIcon /> {label ?? BUSINESS.phoneDisplay}
@@ -33,39 +70,56 @@ export function PhoneButton({ variant = "ghost", label }: { variant?: "ghost" | 
     )
 }
 
+// Le nuage qui sépare les en-têtes en dégradé du contenu
+export function CloudDivider({ className = "cloud" }: { className?: string }) {
+    return (
+        <div className={className} aria-hidden="true">
+            <img
+                src="/images/cloud-divider-1600.webp"
+                srcSet="/images/cloud-divider-1600.webp 1600w, /images/cloud-divider-3200.webp 3200w"
+                sizes="100vw"
+                alt=""
+                width={6400}
+                height={1026}
+                decoding="async"
+            />
+        </div>
+    )
+}
+
 // ---------- Hero des pages intérieures ----------
 
-export function PageHero({ crumb, eyebrow, title, intro, chips = ["Premier RDV gratuit", "50 € la séance", "À domicile ou en visio"] }: {
+export function PageHero({ crumb, eyebrow, title, intro, chips = ["Premier RDV gratuit", "50 € la séance", "À domicile ou en visio"], cta = "Réserver le 1er RDV gratuit" }: {
     crumb: string
     eyebrow: string
     title: ReactNode
     intro: ReactNode
     chips?: string[]
+    cta?: string
 }) {
     return (
         <>
             <section className="ph">
+                <div className="ph-glow" aria-hidden="true" />
                 <div className="ph-inner">
-                    <nav className="ph-crumbs" aria-label="Fil d'Ariane">
+                    <nav className="ph-crumbs hero-in" aria-label="Fil d'Ariane">
                         <a href="/">Accueil</a>
-                        <span aria-hidden="true">›</span>
+                        <span aria-hidden="true">/</span>
                         <span aria-current="page">{crumb}</span>
                     </nav>
-                    <span className="ph-eyebrow">{eyebrow}</span>
-                    <h1 className="ph-title">{title}</h1>
-                    <p className="ph-intro">{intro}</p>
-                    <div className="ph-actions">
-                        <a href="/contact" className="btn btn-white">Réserver le 1er RDV gratuit →</a>
+                    <span className="ph-eyebrow hero-in" style={delay(60)}>{eyebrow}</span>
+                    <h1 className="ph-title hero-in" style={delay(120)}>{title}</h1>
+                    <p className="ph-intro hero-in" style={delay(200)}>{intro}</p>
+                    <div className="ph-actions hero-in" style={delay(280)}>
+                        <CtaLink variant="dark">{cta}</CtaLink>
                         <PhoneButton />
                     </div>
-                    <ul className="ph-chips">
-                        {chips.map(c => <li key={c}>{c}</li>)}
+                    <ul className="ph-chips hero-in" style={delay(360)}>
+                        {chips.map(c => <li key={c}><span className="chip-check"><CheckIcon size={9} /></span>{c}</li>)}
                     </ul>
                 </div>
             </section>
-            <div className="cloud">
-                <img src="/images/cloud-divider.png" alt="" width={6400} height={1026} />
-            </div>
+            <CloudDivider />
         </>
     )
 }
@@ -86,10 +140,10 @@ export function ParcoursRail({ current = [] }: { current?: StageKey[] }) {
     return (
         <nav className="rail" aria-label="Accompagnement selon la classe de votre enfant">
             <ol>
-                {STAGES.map(s => {
+                {STAGES.map((s, i) => {
                     const isCurrent = current.includes(s.key)
                     return (
-                        <li key={s.key} className={isCurrent ? "is-current" : undefined}>
+                        <li key={s.key} className={isCurrent ? "is-current" : undefined} style={{ "--i": i } as CSSProperties}>
                             <div className="rail-here" aria-hidden="true">
                                 {isCurrent && (
                                     <>
@@ -104,6 +158,7 @@ export function ParcoursRail({ current = [] }: { current?: StageKey[] }) {
                                     <span className="rail-label">{s.label}</span>
                                     <span className="rail-hint">{s.hint}</span>
                                 </span>
+                                <span className="rail-go" aria-hidden="true"><ArrowIcon size={13} /></span>
                             </a>
                         </li>
                     )
@@ -115,31 +170,50 @@ export function ParcoursRail({ current = [] }: { current?: StageKey[] }) {
 
 // ---------- Mise en page contenu + carte de réservation ----------
 
-export function PageBody({ children }: { children: ReactNode }) {
+type BookingProps = {
+    eyebrow?: string
+    title?: string
+    text?: string
+    price?: number
+    priceLabel?: ReactNode
+    cta?: string
+}
+
+export function PageBody({ children, booking }: { children: ReactNode; booking?: BookingProps }) {
     return (
         <div className="page-body">
             <article className="prose">{children}</article>
-            <BookingCard />
+            <BookingCard {...booking} />
         </div>
     )
 }
 
-export function BookingCard() {
+// Par défaut : l'offre d'orientation (1er RDV gratuit, puis 50 €). Les pages d'un autre service passent leurs propres valeurs.
+export function BookingCard({
+    eyebrow = "Premier pas",
+    title = "Le premier rendez-vous est gratuit",
+    text = "On fait connaissance, vous m'expliquez la situation de votre enfant et je vous dis comment je peux l'aider. Sans engagement.",
+    price = BUSINESS.sessionPrice,
+    priceLabel = "la séance d'environ 1 h, ensuite",
+    cta = "Réserver le 1er RDV gratuit",
+}: BookingProps) {
     return (
         <aside className="booking" aria-label="Prendre rendez-vous">
-            <span className="booking-eyebrow">Premier pas</span>
-            <p className="booking-title">Le premier rendez-vous est gratuit</p>
-            <p className="booking-text">On fait connaissance, vous m'expliquez la situation de votre enfant et je vous dis comment je peux l'aider. Sans engagement.</p>
-            <div className="booking-price">
-                <strong>{BUSINESS.sessionPrice} €</strong>
-                <span>la séance d'environ 1 h, ensuite</span>
+            <div className="booking-core">
+                <span className="booking-eyebrow">{eyebrow}</span>
+                <p className="booking-title">{title}</p>
+                <p className="booking-text">{text}</p>
+                <div className="booking-price">
+                    <strong>{price}&nbsp;€</strong>
+                    <span>{priceLabel}</span>
+                </div>
+                <CtaLink variant="dark">{cta}</CtaLink>
+                <PhoneButton variant="outline" />
+                <a className="booking-rating" href={BUSINESS.googleReviewsUrl} target="_blank" rel="noopener noreferrer">
+                    <Stars size={14} /> <strong>{RATING.value}</strong> {RATING.label}
+                </a>
+                <p className="booking-hours">Lun-ven 9h-19h · sam 9h-12h · déplacement inclus à 45 km</p>
             </div>
-            <a href="/contact" className="btn btn-dark">Prendre rendez-vous →</a>
-            <PhoneButton variant="outline" />
-            <a className="booking-rating" href={BUSINESS.googleReviewsUrl} target="_blank" rel="noopener noreferrer">
-                <Stars size={14} /> <strong>{RATING.value}</strong> {RATING.label}
-            </a>
-            <p className="booking-hours">Lun-ven 9h-19h · sam 9h-12h · déplacement inclus à 45 km</p>
         </aside>
     )
 }
@@ -151,8 +225,11 @@ export function Faq({ items }: { items: { q: string; a: ReactNode }[] }) {
         <div className="faq">
             {items.map(item => (
                 <details key={item.q}>
-                    <summary>{item.q}</summary>
-                    <p>{item.a}</p>
+                    <summary>
+                        <span>{item.q}</span>
+                        <span className="faq-icon" aria-hidden="true" />
+                    </summary>
+                    <div className="faq-answer"><p>{item.a}</p></div>
                 </details>
             ))}
         </div>
@@ -161,18 +238,32 @@ export function Faq({ items }: { items: { q: string; a: ReactNode }[] }) {
 
 // ---------- Avis Google ----------
 
+export function GoogleG({ size = 14 }: { size?: number }) {
+    return (
+        <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.4h6.5a5.6 5.6 0 0 1-2.4 3.6v3h3.9c2.2-2.1 3.5-5.1 3.5-8.7z" />
+            <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-2.9l-3.9-3a7.2 7.2 0 0 1-10.8-3.8h-4v3.1A12 12 0 0 0 12 24z" />
+            <path fill="#FBBC05" d="M5.3 14.3a7.2 7.2 0 0 1 0-4.6V6.6h-4a12 12 0 0 0 0 10.8l4-3.1z" />
+            <path fill="#EA4335" d="M12 4.8c1.8 0 3.3.6 4.6 1.8l3.4-3.4A12 12 0 0 0 1.3 6.6l4 3.1A7.2 7.2 0 0 1 12 4.8z" />
+        </svg>
+    )
+}
+
 export function Reviews({ variant = "light" }: { variant?: "light" | "dark" }) {
+    const gridRef = useRef<HTMLDivElement>(null)
+    useFocusableScroller(gridRef, "Avis Google, faire défiler horizontalement")
+
     return (
         <>
-            <div className="reviews-grid">
-                {REVIEWS.map(r => (
-                    <figure key={r.author} className={`review review-${variant}`} style={{ margin: 0 }}>
+            <div className="reviews-grid" ref={gridRef}>
+                {REVIEWS.map((r, i) => (
+                    <figure key={r.author} className={`review review-${variant}`} data-reveal style={delay(i * 70)}>
                         <div className="review-top">
                             <Stars />
-                            <span className="review-source">Avis Google</span>
+                            <span className="review-source"><GoogleG size={12} /> Avis Google</span>
                         </div>
-                        <blockquote className="review-text" style={{ margin: "0 0 22px" }}>
-                            « {r.text}{r.excerpt ? " […]" : ""} »
+                        <blockquote className="review-text">
+                            «&nbsp;{r.text}{r.excerpt ? "\u00A0[…]" : ""}&nbsp;»
                         </blockquote>
                         <figcaption className="review-author">
                             <span className="review-avatar" style={{ background: r.color }} aria-hidden="true">{r.initial}</span>
@@ -184,8 +275,8 @@ export function Reviews({ variant = "light" }: { variant?: "light" | "dark" }) {
                     </figure>
                 ))}
             </div>
-            <a className="reviews-more" href={BUSINESS.googleReviewsUrl} target="_blank" rel="noopener noreferrer" style={{ color: variant === "dark" ? "white" : "var(--teal-dark)" }}>
-                <Stars size={14} /> {RATING.value} {RATING.label} · lire tous les avis →
+            <a className={`reviews-more reviews-more-${variant}`} href={BUSINESS.googleReviewsUrl} target="_blank" rel="noopener noreferrer">
+                <Stars size={14} /> {RATING.value} {RATING.label} · lire tous les avis <ArrowIcon size={14} />
             </a>
         </>
     )
@@ -193,17 +284,18 @@ export function Reviews({ variant = "light" }: { variant?: "light" | "dark" }) {
 
 // ---------- Bandeau final + pages liées ----------
 
-export function CtaBand({ title = "Parlons de la situation de votre enfant", text = "Un premier échange gratuit, par téléphone ou en rendez-vous, pour savoir comment l'aider concrètement." }: { title?: string; text?: string }) {
+export function CtaBand({ title = "Parlons de la situation de votre enfant", text = "Un premier échange gratuit, par téléphone ou en rendez-vous, pour savoir comment l'aider concrètement.", eyebrow = "Premier rendez-vous offert", cta = "Réserver le 1er RDV gratuit" }: { title?: string; text?: string; eyebrow?: string; cta?: string }) {
     return (
-        <section className="cta-band">
+        <section className="cta-band" data-reveal>
             <div className="cta-band-inner">
-                <div style={{ position: "relative", zIndex: 1 }}>
+                <div className="cta-band-copy">
+                    <span className="cta-band-eyebrow">{eyebrow}</span>
                     <h2>{title}</h2>
                     <p>{text}</p>
                 </div>
                 <div className="cta-band-actions">
-                    <a href="/contact" className="btn btn-teal">Réserver le 1er RDV gratuit →</a>
-                    <PhoneButton />
+                    <CtaLink variant="white">{cta}</CtaLink>
+                    <PhoneButton variant="outline" />
                 </div>
             </div>
         </section>
@@ -216,6 +308,7 @@ export const SERVICE_LINKS = [
     { href: "/orientation-lycee-specialites", title: "Spécialités au lycée", text: "Choisir ses spécialités sans se fermer de portes." },
     { href: "/accompagnement-parcoursup", title: "Accompagnement Parcoursup", text: "Vœux, projets motivés, réponses." },
     { href: "/reorientation-post-bac", title: "Réorientation post-bac", text: "Rebondir après une première année qui ne convient pas." },
+    { href: "/soutien-scolaire", title: "Soutien scolaire à domicile", text: "30 € la séance de 1 h 30 grâce à l'avance immédiate." },
     { href: "/tarifs", title: "Tarifs", text: "50 € la séance, premier rendez-vous gratuit." },
 ]
 
@@ -224,11 +317,11 @@ export function Related({ exclude, title = "Les autres accompagnements" }: { exc
         <section className="related" aria-label={title}>
             <h2 className="related-title">{title}</h2>
             <div className="related-grid">
-                {SERVICE_LINKS.filter(l => l.href !== exclude).map(l => (
-                    <a key={l.href} href={l.href} className="related-card">
+                {SERVICE_LINKS.filter(l => l.href !== exclude).map((l, i) => (
+                    <a key={l.href} href={l.href} className="related-card" data-reveal style={delay(i * 60)}>
                         <strong>{l.title}</strong>
                         <span>{l.text}</span>
-                        <em>Découvrir →</em>
+                        <em>Découvrir <ArrowIcon size={13} /></em>
                     </a>
                 ))}
             </div>
@@ -236,9 +329,20 @@ export function Related({ exclude, title = "Les autres accompagnements" }: { exc
     )
 }
 
+// Barre d'appel fixe sur mobile ; elle s'efface quand le pied de page (qui a ses propres boutons) arrive
 export function MobileCallBar() {
+    const [hidden, setHidden] = useState(false)
+
+    useEffect(() => {
+        const footer = document.querySelector("footer")
+        if (!footer || !("IntersectionObserver" in window)) return
+        const io = new IntersectionObserver(([entry]) => setHidden(entry.isIntersecting), { rootMargin: "0px 0px -120px 0px" })
+        io.observe(footer)
+        return () => io.disconnect()
+    }, [])
+
     return (
-        <div className="callbar">
+        <div className={`callbar${hidden ? " is-hidden" : ""}`}>
             <PhoneButton variant="outline" label="Appeler" />
             <a href="/contact" className="btn btn-dark">Prendre RDV</a>
         </div>
