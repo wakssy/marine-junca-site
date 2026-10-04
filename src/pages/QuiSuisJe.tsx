@@ -1,33 +1,32 @@
-import { PageBody, Reviews, CtaBand, Related, PhoneButton, Mark } from "../components/ui"
+import { PageBody, Reviews, CtaBand, Related, PhoneButton, Mark, CtaLink, CloudDivider, delay } from "../components/ui"
 import { BUSINESS } from "../seo/site"
 
 export default function QuiSuisJe() {
     return (
         <>
             <section className="ph about-hero">
+                <div className="ph-glow" aria-hidden="true" />
                 <div className="ph-inner about-grid">
                     <div>
-                        <nav className="ph-crumbs" aria-label="Fil d'Ariane">
+                        <nav className="ph-crumbs hero-in" aria-label="Fil d'Ariane">
                             <a href="/">Accueil</a>
-                            <span aria-hidden="true">›</span>
+                            <span aria-hidden="true">/</span>
                             <span aria-current="page">Qui suis-je</span>
                         </nav>
-                        <span className="ph-eyebrow">Enchantée !</span>
-                        <h1 className="ph-title">Marine Junca, conseillère d'orientation <Mark>scolaire</Mark></h1>
-                        <p className="ph-intro">Depuis Rivière-Saas-et-Gourby, près de Dax, j'accompagne les collégiens, les lycéens, les étudiants et leurs parents dans leurs choix d'orientation, avec plus de 15 ans d'expérience.</p>
-                        <div className="ph-actions">
-                            <a href="/contact" className="btn btn-white">Me rencontrer : 1er RDV gratuit →</a>
+                        <span className="ph-eyebrow hero-in" style={delay(60)}>Enchantée !</span>
+                        <h1 className="ph-title hero-in" style={delay(120)}>Marine Junca, conseillère d'orientation <Mark>scolaire</Mark></h1>
+                        <p className="ph-intro hero-in" style={delay(200)}>Depuis Rivière-Saas-et-Gourby, près de Dax, j'accompagne les collégiens, les lycéens, les étudiants et leurs parents dans leurs choix d'orientation, avec plus de 15 ans d'expérience.</p>
+                        <div className="ph-actions hero-in" style={delay(280)}>
+                            <CtaLink variant="dark">Me rencontrer : 1er RDV gratuit</CtaLink>
                             <PhoneButton />
                         </div>
                     </div>
-                    <div className="about-photo">
-                        <img src="/images/headshot.png" alt="Portrait de Marine Junca, conseillère d'orientation scolaire" width={1254} height={1254} />
+                    <div className="about-photo hero-in" style={delay(240)}>
+                        <img src="/images/headshot-800.webp" srcSet="/images/headshot-320.webp 320w, /images/headshot-800.webp 800w" sizes="(max-width: 900px) 320px, 400px" alt="Portrait de Marine Junca, conseillère d'orientation scolaire" width={1254} height={1254} />
                     </div>
                 </div>
             </section>
-            <div className="cloud">
-                <img src="/images/cloud-divider.png" alt="" width={6400} height={1026} />
-            </div>
+            <CloudDivider />
 
             <PageBody>
                 <h2>Ce qui me guide</h2>

@@ -8,13 +8,24 @@ const OVERLAP = 4 // px de recouvrement au raccord pour éviter tout interstice 
 export default function BuildFutureSection() {
     const wrapperRef = useRef<HTMLDivElement>(null)
     const stageRef = useRef<HTMLDivElement>(null)
+    const videoRef = useRef<HTMLVideoElement>(null)
     const word1Ref = useRef<HTMLSpanElement>(null)
     const word2Ref = useRef<HTMLSpanElement>(null)
     const [progress, setProgress] = useState(0)
     const [splitPercent, setSplitPercent] = useState(50)
+    const [paused, setPaused] = useState(false)
+    const userPaused = useRef(false)
 
+    // Progression du défilement dans la section, calculée au plus une fois par image.
+    // Mouvement réduit : pas d'animation liée au défilement, la phrase s'affiche directement.
     useEffect(() => {
-        function onScroll() {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            setProgress(1)
+            return
+        }
+        let raf = 0
+        function update() {
+            raf = 0
             const el = wrapperRef.current
             if (!el) return
             const rect = el.getBoundingClientRect()
@@ -23,17 +34,37 @@ export default function BuildFutureSection() {
                 setProgress(1)
                 return
             }
-            const scrolled = -rect.top
-            const p = Math.min(1, Math.max(0, scrolled / total))
-            setProgress(p)
+            setProgress(Math.min(1, Math.max(0, -rect.top / total)))
+        }
+        function onScroll() {
+            if (!raf) raf = requestAnimationFrame(update)
         }
         window.addEventListener("scroll", onScroll, { passive: true })
         window.addEventListener("resize", onScroll)
-        onScroll()
+        update()
         return () => {
             window.removeEventListener("scroll", onScroll)
             window.removeEventListener("resize", onScroll)
+            cancelAnimationFrame(raf)
         }
+    }, [])
+
+    // La vidéo ne tourne que lorsqu'elle est à l'écran
+    useEffect(() => {
+        const video = videoRef.current
+        if (!video) return
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            video.pause()
+            userPaused.current = true
+            setPaused(true)
+            return
+        }
+        const io = new IntersectionObserver(([entry]) => {
+            if (entry.isIntersecting && !userPaused.current) video.play().catch(() => {})
+            else video.pause()
+        })
+        io.observe(video)
+        return () => io.disconnect()
     }, [])
 
     // Mesure la largeur réelle de chaque mot pour que les deux panneaux se rejoignent
@@ -55,47 +86,67 @@ export default function BuildFutureSection() {
             setSplitPercent((seam / stageWidth) * 100)
         }
         measure()
+        document.fonts?.ready.then(measure)
         window.addEventListener("resize", measure)
         return () => window.removeEventListener("resize", measure)
     }, [])
 
-    // panels start fully off-stage (open, video visible) and slide to 0 (closed, covering the video)
+    // Toute vidéo qui tourne en boucle doit pouvoir être mise en pause (WCAG 2.2.2)
+    function togglePlayback() {
+        const video = videoRef.current
+        if (!video) return
+        if (video.paused) {
+            userPaused.current = false
+            video.play().catch(() => {})
+            setPaused(false)
+        } else {
+            userPaused.current = true
+            video.pause()
+            setPaused(true)
+        }
+    }
+
+    // Les panneaux partent hors de la scène (vidéo visible) et se referment sur elle en glissant jusqu'à 0
     const panelShift = (1 - progress) * 100
+    // La scène s'arrondit et se resserre légèrement à mesure que le texte se referme
+    const stageScale = 1 - progress * 0.04
 
     return (
-        <>
-            <style dangerouslySetInnerHTML={{ __html: `
-                .bfs-wrapper { position: relative; height: 220vh; background: white; }
-                .bfs-sticky { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 0 40px; }
-                .bfs-stage { position: relative; width: 100%; max-width: 1000px; margin: 0 auto; aspect-ratio: 983 / 560; border-radius: 10px; overflow: hidden; }
-                .bfs-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-                .bfs-panel { position: absolute; top: 0; bottom: 0; background: white; display: flex; align-items: center; }
-                .bfs-panel-left { left: 0; justify-content: flex-end; }
-                .bfs-panel-right { right: 0; justify-content: flex-start; }
-                .bfs-text { font-size: clamp(26px, 7vw, 58px); font-weight: 600; letter-spacing: -0.03em; color: rgb(33,33,33); line-height: 1.05; white-space: nowrap; }
-                @media (max-width: 900px) {
-                    .bfs-wrapper { height: 180vh; }
-                }
-            ` }} />
-            <div className="bfs-wrapper" ref={wrapperRef}>
-                <div className="bfs-sticky">
-                    <div className="bfs-stage" ref={stageRef}>
-                        <video className="bfs-video" src="/videos/construisez-votre-avenir.mp4" autoPlay muted loop playsInline />
-                        <div
-                            className="bfs-panel bfs-panel-left"
-                            style={{ width: `calc(${splitPercent}% + ${OVERLAP}px)`, transform: `translateX(${-panelShift}%)` }}
-                        >
-                            <span className="bfs-text" ref={word1Ref} style={{ padding: `0 calc(0.18em + ${OVERLAP}px) 0 0.18em` }}>Construisez votre</span>
-                        </div>
-                        <div
-                            className="bfs-panel bfs-panel-right"
-                            style={{ width: `calc(${100 - splitPercent}% + ${OVERLAP}px)`, transform: `translateX(${panelShift}%)` }}
-                        >
-                            <span className="bfs-text" ref={word2Ref} style={{ padding: `0 0.18em 0 calc(0.18em + ${OVERLAP}px)` }}>avenir</span>
-                        </div>
+        <div className="bfs-wrapper" ref={wrapperRef}>
+            <p className="sr-only">Construisez votre avenir</p>
+            <div className="bfs-sticky">
+                <div className="bfs-stage" ref={stageRef} style={{ transform: `scale(${stageScale})` }}>
+                    <video ref={videoRef} className="bfs-video" src="/videos/construisez-votre-avenir.mp4" autoPlay muted loop playsInline preload="metadata" aria-hidden="true" />
+                    <div className="bfs-veil" style={{ opacity: 1 - progress }} aria-hidden="true" />
+                    <div
+                        className="bfs-panel bfs-panel-left"
+                        aria-hidden="true"
+                        style={{ width: `calc(${splitPercent}% + ${OVERLAP}px)`, transform: `translateX(${-panelShift}%)` }}
+                    >
+                        <span className="bfs-text" ref={word1Ref} style={{ padding: `0 calc(0.18em + ${OVERLAP}px) 0 0.18em` }}>Construisez votre</span>
                     </div>
+                    <div
+                        className="bfs-panel bfs-panel-right"
+                        aria-hidden="true"
+                        style={{ width: `calc(${100 - splitPercent}% + ${OVERLAP}px)`, transform: `translateX(${panelShift}%)` }}
+                    >
+                        <span className="bfs-text" ref={word2Ref} style={{ padding: `0 0.18em 0 calc(0.18em + ${OVERLAP}px)` }}>avenir</span>
+                    </div>
+                    <button
+                        type="button"
+                        className="bfs-toggle"
+                        onClick={togglePlayback}
+                        aria-label={paused ? "Lire la vidéo" : "Mettre la vidéo en pause"}
+                        style={{ opacity: Math.max(0, 1 - progress * 1.6), visibility: progress > 0.6 ? "hidden" : "visible" }}
+                    >
+                        {paused ? (
+                            <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 2.5v9l7.5-4.5z" fill="currentColor" /></svg>
+                        ) : (
+                            <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><rect x="3" y="2.5" width="2.6" height="9" rx="1" fill="currentColor" /><rect x="8.4" y="2.5" width="2.6" height="9" rx="1" fill="currentColor" /></svg>
+                        )}
+                    </button>
                 </div>
             </div>
-        </>
+        </div>
     )
 }

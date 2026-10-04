@@ -1,4 +1,4 @@
-import { PhoneButton } from "../components/ui"
+import { PhoneButton, CloudDivider } from "../components/ui"
 
 export default function Merci() {
     return (
@@ -10,7 +10,7 @@ export default function Merci() {
                     <p className="ph-intro" style={{ margin: "0 auto" }}>Je reviens vers vous au plus vite pour convenir du premier rendez-vous gratuit.</p>
                 </div>
             </section>
-            <div className="cloud"><img src="/images/cloud-divider.png" alt="" width={6400} height={1026} /></div>
+            <CloudDivider />
             <div className="simple-page">
                 <h2>Besoin d'une réponse rapide ?</h2>
                 <p>Vous pouvez aussi m'appeler directement, du lundi au vendredi de 9h à 19h et le samedi de 9h à 12h.</p>

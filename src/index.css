@@ -1,58 +1,263 @@
-@import url('https://fonts.googleapis.com/css2?family=Funnel+Display:wght@400;500;600;700&family=Gloria+Hallelujah&display=swap');
+/* Fondations du site : couleurs, typographie, rythme et mouvement.
+   Identité d'origine conservée : dégradé vert/turquoise, Funnel, annotations manuscrites Gloria Hallelujah. */
 
 :root {
+  /* Marque */
   --teal: #4EC8C8;
   --green: #90D4A0;
-  --black: rgb(33, 33, 33);
-  --body-gray: rgb(85, 85, 85);
-  --light-bg: rgb(235, 238, 243);
+  --lime: #C5E8A0;
+  --peach: #E7BE96;
+  --peach-ink: #8F4E24; /* texte sur fond pêche : 5,2:1 */
+  --peach-tint: #FAF2EA;
+  --gradient: linear-gradient(135deg, #90D4A0 0%, #C5E8A0 45%, #4EC8C8 100%);
+
+  /* Encre : un noir légèrement pétrole, tiré du bleu du logo, plus doux que le noir pur */
+  --ink: #13292E;
+  --ink-2: #3F5459;
+  --ink-3: #5F7176; /* 4,7:1 sur --paper, 5,1:1 sur blanc */
+  --black: var(--ink);
+  --body-gray: var(--ink-2);
+
+  /* Textes accentués lisibles sur blanc (le turquoise vif ne passe pas le contraste WCAG) */
+  --teal-ink: #1A7471;
+  --teal-dark: #1A7471;
+  --green-dark: #2D6B4A;
+
+  /* Surfaces */
   --white: #ffffff;
+  --paper: #F2F6F3;
+  --light-bg: var(--paper);
+  --mist: #E6EFEA;
+  --line: rgba(19, 41, 46, 0.08);
+  --line-strong: rgba(19, 41, 46, 0.14);
+  --star: #F0B94E;
+
+  /* Profondeur : ombres longues et diffuses, jamais dures */
+  --shadow-xs: 0 1px 2px rgba(19, 41, 46, 0.05);
+  --shadow-sm: 0 1px 2px rgba(19, 41, 46, 0.04), 0 8px 24px -10px rgba(19, 41, 46, 0.12);
+  --shadow-md: 0 2px 4px rgba(19, 41, 46, 0.03), 0 24px 48px -18px rgba(19, 41, 46, 0.18);
+  --shadow-lg: 0 4px 10px rgba(19, 41, 46, 0.04), 0 40px 90px -30px rgba(19, 41, 46, 0.32);
+
+  /* Rayons concentriques */
+  --r-xl: 32px;
+  --r-lg: 24px;
+  --r-md: 18px;
+  --r-sm: 12px;
+
+  /* Mouvement : courbes fortes (jamais ease-in sur l'interface) et durées courtes pour l'UI */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-spring: cubic-bezier(0.32, 0.72, 0, 1); /* courbe « tiroir » iOS */
+  --dur-press: 160ms;
+  --dur-fast: 200ms;
+  --dur-ui: 250ms;
+
+  /* Rythme */
+  --container: 1240px;
+  --gutter: clamp(20px, 4vw, 40px);
+  --section-y: clamp(84px, 10vw, 148px);
+
+  /* Typographie */
+  --font-display: 'Funnel Display', system-ui, sans-serif;
+  --font-text: 'Funnel Sans', system-ui, sans-serif;
+  --font-hand: 'Gloria Hallelujah', cursive;
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+}
+
+/* Pas de text-size-adjust ici : dans Safari sur Mac, il empêche le texte de suivre le zoom de la page
+   (les blocs grossissent, le texte non), ce qui déforme toute la mise en page. */
+
+/* Anti-débordement horizontal : « clip » là où il existe ; les Safari antérieurs à 16 se contentent du « hidden » posé sur body */
+@supports (overflow: clip) {
+  html { overflow-x: clip; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
 }
 
 body {
   margin: 0;
-  font-family: 'Funnel Display', sans-serif;
-  color: var(--black);
+  font-family: var(--font-text);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink);
   background: var(--white);
   overflow-x: hidden;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern", "liga";
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+img, video, svg {
+  max-width: 100%;
+}
+
+img {
+  height: auto;
 }
 
 a {
   color: inherit;
 }
 
+::selection {
+  background: rgba(144, 212, 160, 0.55);
+  color: var(--ink);
+}
+
+/* Les surfaces du navigateur portent aussi l'identité */
+html {
+  scrollbar-color: rgba(19, 41, 46, 0.28) transparent;
+  accent-color: var(--teal-ink);
+}
+input, textarea, select {
+  caret-color: var(--teal-ink);
+}
+
 [id] {
   scroll-margin-top: 110px;
 }
 
+/* Texte réservé aux lecteurs d'écran */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* Lien d'évitement : premier élément atteint au clavier, visible seulement au focus */
+.skip-link {
+  position: fixed; top: 12px; left: 12px; z-index: 200;
+  padding: 12px 18px; border-radius: 999px;
+  background: var(--ink); color: white; font-family: var(--font-display); font-weight: 600; text-decoration: none;
+  transform: translateY(-160%);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.skip-link:focus-visible { transform: none; outline-color: var(--lime); }
+main:focus { outline: none; }
+
+/* Contour discret et neutre sur les photos, pour une profondeur régulière */
+.photo-outline { outline: 1px solid rgba(0, 0, 0, 0.1); outline-offset: -1px; }
+
+/* ---------- Conteneurs ---------- */
 .section {
-  padding: 80px 40px;
-  max-width: 1200px;
+  padding: var(--section-y) var(--gutter);
+  max-width: calc(var(--container) + 2 * var(--gutter));
   margin: 0 auto;
 }
 
+.container {
+  max-width: calc(var(--container) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* ---------- Titres de section ---------- */
 .section-label {
-  font-size: 14px;
-  color: var(--teal);
-  font-family: 'Gloria Hallelujah', cursive;
-  margin-bottom: 12px;
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-hand);
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--teal-ink);
+  margin-bottom: 14px;
 }
 
 .section-title {
-  font-size: 48px;
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4.4vw, 56px);
   font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 120%;
-  margin: 0 0 40px 0;
-  max-width: 700px;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+  margin: 0 0 clamp(36px, 5vw, 64px);
+  max-width: 760px;
+  color: var(--ink);
 }
 
-@media (max-width: 768px) {
-  .section { padding: 50px 20px; }
-  .section-title { font-size: 32px; }
+.section-lead {
+  font-size: clamp(17px, 1.4vw, 19px);
+  line-height: 1.6;
+  color: var(--ink-2);
+  max-width: 560px;
+  margin: 0;
+}
+
+.section-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 24px 64px;
+  align-items: end;
+  margin-bottom: clamp(40px, 5vw, 64px);
+}
+
+.section-head .section-title {
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .section-head { grid-template-columns: 1fr; }
+}
+
+/* ---------- Apparition au défilement (surfaces marketing uniquement, une seule fois) ----------
+   La classe .js est posée dans index.html : sans JavaScript, tout reste visible. */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition:
+    opacity 0.7s var(--ease-out),
+    transform 0.9s var(--ease-out);
+  transition-delay: calc(var(--d, 0) * 1ms);
+}
+
+.js [data-reveal="fade"] {
+  transform: none;
+}
+
+.js [data-reveal="scale"] {
+  transform: translate3d(0, 24px, 0) scale(0.96);
+}
+
+.js [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Photo dévoilée de bas en haut dans son cadre, quand le cadre (observé) apparaît.
+   L'image elle-même n'est pas observée : entièrement masquée, elle ne serait jamais « visible ». */
+.js [data-reveal] [data-reveal-clip] {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1s var(--ease-in-out) 150ms;
+}
+.js [data-reveal].is-in [data-reveal-clip] {
+  clip-path: inset(0 0 0 0);
+}
+
+/* Mouvement réduit : on garde des fondus doux, on retire les déplacements */
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal],
+  .js [data-reveal="scale"] {
+    transform: none;
+    transition: opacity 0.4s ease;
+  }
+  .js [data-reveal] [data-reveal-clip] {
+    clip-path: none;
+    transition: none;
+  }
 }

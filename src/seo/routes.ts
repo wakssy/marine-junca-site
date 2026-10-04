@@ -9,6 +9,7 @@ export type RouteMeta = {
     noindex?: boolean
     breadcrumb?: string // libellé du fil d'Ariane (absent = accueil)
     service?: string // nom du service pour le schema Service
+    serviceType?: "orientation" | "soutien" // type de service (orientation par défaut)
     jsonLd?: object[]
 }
 
@@ -20,7 +21,7 @@ export const businessSchema = {
     "@type": "ProfessionalService",
     "@id": BUSINESS_ID,
     name: BUSINESS.name,
-    description: "Conseillère d'orientation scolaire indépendante près de Dax : bilan d'orientation, orientation après la 3e, choix des spécialités, accompagnement Parcoursup et réorientation. À domicile dans un rayon de 45 km ou en visio.",
+    description: "Conseillère d'orientation scolaire indépendante près de Dax : bilan d'orientation, orientation après la 3e, choix des spécialités, accompagnement Parcoursup et réorientation, ainsi que soutien scolaire à domicile. Dans un rayon de 45 km ou en visio.",
     url: SITE_URL,
     image: `${SITE_URL}/images/headshot.png`,
     logo: `${SITE_URL}/favicon-512.png`,
@@ -43,15 +44,22 @@ export const businessSchema = {
         { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "09:00", closes: "19:00" },
         { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "09:00", closes: "12:00" },
     ],
-    priceRange: "0 € - 50 €",
+    priceRange: "0 € - 60 €",
     founder: { "@id": PERSON_ID },
     sameAs: [BUSINESS.instagram, BUSINESS.facebook, BUSINESS.linkedin],
     hasOfferCatalog: {
         "@type": "OfferCatalog",
-        name: "Accompagnements en orientation scolaire",
+        name: "Orientation et soutien scolaire",
         itemListElement: [
             { "@type": "Offer", itemOffered: { "@type": "Service", name: "Premier rendez-vous d'orientation" }, price: "0", priceCurrency: "EUR" },
             { "@type": "Offer", itemOffered: { "@type": "Service", name: "Séance d'accompagnement en orientation scolaire" }, price: String(BUSINESS.sessionPrice), priceCurrency: "EUR" },
+            {
+                "@type": "Offer",
+                itemOffered: { "@type": "Service", name: "Séance de soutien scolaire (1 h 30)" },
+                price: String(BUSINESS.tutoringPrice),
+                priceCurrency: "EUR",
+                description: `${BUSINESS.tutoringFullPrice} € la séance, soit ${BUSINESS.tutoringPrice} € après l'avance immédiate de crédit d'impôt (50 %)`,
+            },
         ],
     },
 }
@@ -67,23 +75,25 @@ export const personSchema = {
     sameAs: [BUSINESS.linkedin, BUSINESS.instagram, BUSINESS.facebook],
 }
 
-const serviceSchema = (path: string, name: string, description: string) => ({
+const serviceSchema = (path: string, name: string, description: string, type: "orientation" | "soutien" = "orientation") => ({
     "@context": "https://schema.org",
     "@type": "Service",
     name,
     description,
     url: `${SITE_URL}${path}`,
-    serviceType: "Orientation scolaire",
+    serviceType: type === "soutien" ? "Soutien scolaire" : "Orientation scolaire",
     provider: { "@id": BUSINESS_ID },
     areaServed: { "@type": "AdministrativeArea", name: "Landes (40)" },
-    offers: { "@type": "Offer", price: String(BUSINESS.sessionPrice), priceCurrency: "EUR", description: "Par séance, premier rendez-vous gratuit" },
+    offers: type === "soutien"
+        ? { "@type": "Offer", price: String(BUSINESS.tutoringPrice), priceCurrency: "EUR", description: `Séance de 1 h 30 : ${BUSINESS.tutoringFullPrice} €, soit ${BUSINESS.tutoringPrice} € après l'avance immédiate de crédit d'impôt` }
+        : { "@type": "Offer", price: String(BUSINESS.sessionPrice), priceCurrency: "EUR", description: "Par séance, premier rendez-vous gratuit" },
 })
 
 export const routes: RouteMeta[] = [
     {
         path: "/",
         title: "Conseillère d'orientation scolaire à Dax (40) | Marine Junca",
-        description: "Conseillère d'orientation scolaire près de Dax : bilan, choix après la 3e, spécialités, Parcoursup. 50 € la séance, 1er RDV gratuit. Landes et visio.",
+        description: "Conseillère d'orientation scolaire à Dax : bilan, 3e, spécialités, Parcoursup (50 €, 1er RDV gratuit) et soutien scolaire à 30 € avec l'avance immédiate.",
         ogImage: "/images/hero-photo.png",
         jsonLd: [
             businessSchema,
@@ -104,7 +114,7 @@ export const routes: RouteMeta[] = [
     },
     {
         path: "/accompagnement-parcoursup",
-        title: "Accompagnement Parcoursup à Dax (40) | Marine Junca",
+        title: "Coach et accompagnement Parcoursup à Dax | Marine Junca",
         description: "Coach Parcoursup près de Dax : choix des formations, liste de vœux, projets de formation motivés, réponses et phase complémentaire. 50 € la séance, 1er RDV gratuit.",
         breadcrumb: "Accompagnement Parcoursup",
         service: "Accompagnement Parcoursup",
@@ -112,7 +122,7 @@ export const routes: RouteMeta[] = [
     {
         path: "/orientation-apres-la-3e",
         title: "Orientation après la 3e : aider son enfant à choisir | Dax",
-        description: "Votre enfant ne sait pas quoi faire après la 3e ? Seconde générale, bac pro, CAP, apprentissage : une conseillère d'orientation près de Dax pour choisir sereinement.",
+        description: "Votre enfant ne sait pas quoi faire après la 3ème ? Seconde générale, bac pro, CAP, apprentissage : une conseillère d'orientation près de Dax pour choisir sereinement.",
         breadcrumb: "Orientation après la 3e",
         service: "Orientation après la 3e",
     },
@@ -131,9 +141,17 @@ export const routes: RouteMeta[] = [
         service: "Réorientation post-bac",
     },
     {
+        path: "/soutien-scolaire",
+        title: "Soutien scolaire à domicile à Dax (40) | Marine Junca",
+        description: "Aide aux devoirs, remise à niveau, méthode, préparation des contrôles, du primaire au lycée : 30 € la séance de 1 h 30 avec l'avance immédiate, à domicile près de Dax.",
+        breadcrumb: "Soutien scolaire",
+        service: "Soutien scolaire à domicile",
+        serviceType: "soutien",
+    },
+    {
         path: "/tarifs",
-        title: "Tarifs d'un conseiller d'orientation privé près de Dax",
-        description: "Combien coûte un conseiller d'orientation privé ? Séance à 50 €, premier rendez-vous gratuit, déplacement inclus à 45 km autour de Rivière-Saas-et-Gourby. Sans forfait imposé.",
+        title: "Tarifs conseiller d'orientation et soutien scolaire à Dax",
+        description: "Orientation : 50 € la séance, 1er RDV gratuit. Soutien scolaire : 30 € la séance grâce à l'avance immédiate de crédit d'impôt. Déplacement inclus autour de Dax.",
         breadcrumb: "Tarifs",
     },
     {
@@ -173,7 +191,7 @@ export function getRoute(path: string): RouteMeta {
 
 export function jsonLdFor(route: RouteMeta): object[] {
     const list = [...(route.jsonLd ?? [])]
-    if (route.service) list.push(serviceSchema(route.path, route.service, route.description))
+    if (route.service) list.push(serviceSchema(route.path, route.service, route.description, route.serviceType))
     if (route.breadcrumb && !route.noindex) {
         list.push({
             "@context": "https://schema.org",
@@ -191,7 +209,8 @@ const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").repl
 
 // Balises <head> propres à une page : injectées au build dans le HTML pré-rendu
 export function buildHead(route: RouteMeta): string {
-    const url = `${SITE_URL}${route.path === "/" ? "" : route.path}`
+    // Même forme que dans le sitemap : l'accueil avec sa barre finale, les autres pages sans
+    const url = `${SITE_URL}${route.path}`
     const image = `${SITE_URL}${route.ogImage ?? "/images/hero-photo.png"}`
     const tags = [
         `<title>${esc(route.title)}</title>`,
