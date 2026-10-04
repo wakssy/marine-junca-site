@@ -278,7 +278,7 @@ export default function Home() {
                 </div>
                 <PricingCards />
                 <p className="pricing-more" data-reveal>
-                    <a href="/tarifs" className="text-link">Combien de séances prévoir et comparaison avec le CIO gratuit <ArrowIcon size={14} /></a>
+                    <a href="/tarifs" className="text-link">Combien de séances prévoir selon la situation <ArrowIcon size={14} /></a>
                 </p>
             </section>
 

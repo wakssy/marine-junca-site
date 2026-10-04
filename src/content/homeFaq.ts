@@ -24,8 +24,4 @@ export const HOME_FAQ = [
         q: "Vous déplacez-vous à domicile autour de Dax ?",
         a: "Oui. Je me déplace à domicile dans un rayon de 45 km autour de Rivière-Saas-et-Gourby : Dax, Saint-Paul-lès-Dax, Saubusse, Peyrehorade, Saint-Vincent-de-Tyrosse, Soustons, Capbreton, Tartas, Bayonne et les communes voisines. Au-delà, les séances se font en visio.",
     },
-    {
-        q: "Quelle différence avec le CIO de Dax ou le psychologue de l'Éducation nationale ?",
-        a: "Le CIO et les psychologues de l'Éducation nationale proposent un accompagnement gratuit, précieux et complémentaire. En libéral, je propose un suivi individuel dans la durée, à domicile ou en visio, sur des créneaux en semaine jusqu'à 19h et le samedi matin, avec les parents associés à la démarche.",
-    },
 ]

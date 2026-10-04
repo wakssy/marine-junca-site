@@ -3,7 +3,6 @@ import PricingCards from "../components/PricingCards"
 
 const faq = [
     { q: "Combien coûte un conseiller ou un coach d'orientation privé ?", a: "Les tarifs varient beaucoup selon les professionnels : certains facturent à la séance, d'autres proposent des forfaits de bilan pouvant atteindre plusieurs centaines d'euros. Ici, le premier rendez-vous est gratuit et chaque séance est à 50 €, sans forfait imposé." },
-    { q: "Un conseiller d'orientation peut-il être gratuit ?", a: "Oui : les CIO (centres d'information et d'orientation) et les psychologues de l'Éducation nationale présents dans les collèges et lycées reçoivent les élèves et leurs familles gratuitement. C'est un service public précieux, complémentaire d'un accompagnement individuel en libéral." },
     { q: "Combien de séances faut-il prévoir ?", a: "En général 3 à 6 séances pour un accompagnement complet, soit 150 à 300 €. Un besoin plus ciblé peut demander moins de séances. On en parle dès le premier rendez-vous, et vous restez libre d'arrêter à tout moment." },
     { q: "Le déplacement est-il facturé ?", a: "Non, le déplacement à domicile est inclus dans le prix de la séance dans un rayon de 45 km autour de Rivière-Saas-et-Gourby (Dax, Saint-Paul-lès-Dax, Peyrehorade, Saint-Vincent-de-Tyrosse, Soustons, Tartas, Bayonne…). Au-delà, les séances se font en visio, au même tarif." },
     { q: "Quel est le prix d'une heure de soutien scolaire ?", a: "La séance de soutien scolaire dure 1 h 30 et coûte 60 €. Avec l'avance immédiate de crédit d'impôt, vous ne payez que 30 € la séance, soit 20 € de l'heure, frais de déplacement inclus." },
@@ -52,23 +51,6 @@ export default function Tarifs() {
                     </table>
                 </div>
                 <p>Vous ne payez que les séances réalisées et vous restez libre d'arrêter à tout moment.</p>
-
-                <h2>Conseiller d'orientation gratuit (CIO) ou privé : quelle différence ?</h2>
-                <p>Les deux sont complémentaires. Voici ce qui les distingue, pour vous aider à choisir selon votre situation :</p>
-                <div className="table-scroll">
-                    <table className="compare">
-                        <thead>
-                            <tr><th scope="col"></th><th scope="col">CIO / psychologue de l'Éducation nationale</th><th scope="col">Conseillère d'orientation indépendante</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr><th scope="row">Prix</th><td>Gratuit</td><td>1er RDV gratuit, puis 50 € la séance</td></tr>
-                            <tr><th scope="row">Lieu</th><td>Au CIO ou dans l'établissement scolaire</td><td>À domicile autour de Dax ou en visio</td></tr>
-                            <tr><th scope="row">Horaires</th><td>Horaires du service</td><td>Du lundi au vendredi jusqu'à 19h, samedi matin</td></tr>
-                            <tr><th scope="row">Suivi</th><td>Selon les disponibilités du service</td><td>Suivi individuel dans la durée, avec la même personne</td></tr>
-                            <tr><th scope="row">Parents</th><td>Peuvent être reçus</td><td>Associés au premier rendez-vous et aux moments clés</td></tr>
-                        </tbody>
-                    </table>
-                </div>
 
                 <h2>Ce qui est compris dans chaque séance</h2>
                 <ul>
